@@ -1,0 +1,81 @@
+.searching-container {
+    max-width: 600px;
+    padding: 20px;
+    text-align: center;
+    background-color: var(--light-blue);
+  }
+
+  .buy-btn, .rent-btn {
+    background-color: var(--light-blue) !important;
+    color: white !important;
+    border: 1px solid white !important;
+  }
+
+  .buy-btn:hover, .rent-btn:hover {
+    background-color: var(--dark-blue) !important;
+  }
+  
+  .rent-btn.active, .buy-btn.active {
+    background: var(--purple-grad) !important;
+    border: 1px solid white !important; 
+  }
+  
+  .category-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .category-buttons button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: 2px solid #333;
+    background: #fff;
+    cursor: pointer;
+  }
+  
+  .category-buttons button.active {
+    background: #007bff;
+    color: white;
+  }
+  
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+
+  .filter-group label{
+    color: white;
+    text-align: left;
+    margin-bottom: 0.3rem;
+  }
+  
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .filter-group select {
+    padding: 8px;
+    font-size: 14px;
+    background-color: var(--dark-blue);
+    color: white;
+    border: 1px solid white !important;
+  }
+
+  .filter-group select:focus {
+    box-shadow: 0px 0px 15px 2px rgba(153, 102, 204, 0.6), 
+    0px 0px 5px 2px rgba(223, 115, 255, 0.5), 
+    0px 0px 10px 2px rgba(221, 160, 221, 0.4);
+  }
+
+  .searching-container a{
+    background: var(--purple-grad) !important;
+    border: none;
+    padding-right: 2rem;
+    padding-left: 2rem;
+  }
+  

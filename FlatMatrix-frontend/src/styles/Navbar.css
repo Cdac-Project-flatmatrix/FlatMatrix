@@ -1,0 +1,77 @@
+/* Navbar Styling */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 50px;
+  }
+  
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+  }
+  
+  .nav-links a {
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+  }
+  
+  /* Buttons */
+  .login-btn, .primary-btn {
+    padding: 8px 15px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .login-btn {
+    background: transparent;
+    color: white;
+    border: 1px solid white;
+  }
+  
+  .primary-btn {
+    background-color: #00b4d8;
+    color: white;
+  }
+  /* Logo Styling */
+.navbar-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+/* bg of navbar */
+.custom-navbar {
+  background-color: #262940 !important;
+}
+
+/* Navbar links */
+.navbar-nav .nav-link {
+  color: #ffffff !important; /* Make links white */
+  transition: color 0.3s ease;
+}
+
+/* Hover effect for all links */
+.navbar-nav .nav-link:hover {
+  color: #DF73FF !important; /* Change to a golden color on hover */
+}
+
+/* Button with white text and hover effect */
+.navbar-nav .nav-link.btn {
+  color: #ffffff !important; /* Make button text white */
+  background-color: #DF73FF !important; /* Button color */
+  border-radius: 20px; /* Rounded button */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Hover effect on button */
+.navbar-nav .nav-link.btn:hover {
+  background-color: #DF73FF !important; /* Darker button color */
+  color: #fff !important; /* Keep text white on hover */
+}
+
+.nav-link.active {
+  color: #DF73FF !important;
+}
