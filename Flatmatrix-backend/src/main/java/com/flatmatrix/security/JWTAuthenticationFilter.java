@@ -49,14 +49,13 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
         String token = request.getHeader("Authorization");
         logger.info("Authorization Header:  {}", token);
-
+        
         if (token != null && token.startsWith("Bearer ")) {
-            token = token.substring(7); // Remove "Bearer " prefix
-
+            token = token.substring(7).trim();
             Long userId = null;
 
             try {
-                userId = jwtHelper.getUserIdFromToken(token);  // Extract user ID from token
+                userId = jwtHelper.getUserIdFromToken(token); 
             } catch (IllegalArgumentException e) {
                 logger.error("Illegal Argument while fetching the user ID from the token.", e);
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid Token Format");
@@ -103,7 +102,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        // Continue the filter chain if everything is fine
         chain.doFilter(request, response);
     }
 }
