@@ -21,4 +21,6 @@ public class GetPropertyDto {
 	private int bedRooms;
 	private Type type;
 	private Furnished furnished;
+	private Double minPrice;
+	private Double maxPrice;
 }

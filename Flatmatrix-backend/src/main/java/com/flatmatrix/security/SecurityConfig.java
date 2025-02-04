@@ -33,7 +33,7 @@ public class SecurityConfig {
     	http
         .csrf(csrf->csrf.disable())  
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/auth/login", "/auth/register", "/auth/reset-password","/swagger-ui/**").permitAll() 
+            .requestMatchers("/auth/login", "/flatmatrix/auth/register", "/flatmatrix/auth/reset-password","/flatmatrix/swagger-ui/**").permitAll() 
             .anyRequest().authenticated() 
         )
         .sessionManagement(session -> session

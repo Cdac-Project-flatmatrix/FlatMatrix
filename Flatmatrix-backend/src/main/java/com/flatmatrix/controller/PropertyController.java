@@ -1,5 +1,7 @@
 package com.flatmatrix.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -17,9 +19,10 @@ import com.flatmatrix.service.PropertyService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/property")
+@RequestMapping("/properties")
 public class PropertyController {
 
+	private final static Logger logger = LoggerFactory.getLogger(PropertyController.class);
 	@Autowired
 	private PropertyService propertyService;
 
@@ -32,11 +35,13 @@ public class PropertyController {
 		}
 	}
 
-	@PostMapping("/list")
-	public ResponseEntity<?> getProperty(@RequestBody GetPropertyDto dto) {
+	@PostMapping("/filtered-properties")
+	public ResponseEntity<?> getFilteredProperty(@RequestBody GetPropertyDto dto) {
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(propertyService.getProperty(dto));
+			logger.info("Filter property");
+			return ResponseEntity.status(HttpStatus.OK).body(propertyService.getFilteredProperties(dto));
 		} catch (RuntimeException e) {
+			logger.info("Error to fetch");
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 	}

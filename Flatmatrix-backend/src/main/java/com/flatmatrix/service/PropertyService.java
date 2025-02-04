@@ -10,5 +10,5 @@ import com.flatmatrix.pojos.Property;
 public interface PropertyService {
 	public ApiResponse addProperty(PropertyReqDto propertyDto);
 
-	public List<Property> getProperty(GetPropertyDto dto);
+	public List<PropertyReqDto> getFilteredProperties(GetPropertyDto dto);
 }
