@@ -12,6 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PropertyResponseDto {
+	private Long id;
 	private double price;
     private int size;
     private int bedRooms;

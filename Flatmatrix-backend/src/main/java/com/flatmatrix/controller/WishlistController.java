@@ -1,7 +1,11 @@
 package com.flatmatrix.controller;
 
 import com.flatmatrix.service.WishlistService;
+import com.flatmatrix.dto.PropertyResponseDto;
 import com.flatmatrix.security.CustomUserDetails;
+
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -34,5 +38,13 @@ public class WishlistController {
         logger.info("User {} removing property {} from wishlist", currentUser.getUserId(), propertyId);
         String message = wishlistService.removeFromWishlist(propertyId, currentUser.getUserId());
         return ResponseEntity.ok(message);
+    }
+    
+    @GetMapping
+    public ResponseEntity<?> getWishlist() {
+        CustomUserDetails currentUser = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        logger.info("Fetching wishlist for user {}", currentUser.getUserId());
+        List<PropertyResponseDto> wishlistProperties = wishlistService.getWishlist(currentUser.getUserId());
+        return ResponseEntity.ok(wishlistProperties);
     }
 }
