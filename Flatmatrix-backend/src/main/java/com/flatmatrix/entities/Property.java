@@ -1,4 +1,4 @@
-package com.flatmatrix.pojos;
+package com.flatmatrix.entities;
 
 import java.util.ArrayList;
 import java.util.List;

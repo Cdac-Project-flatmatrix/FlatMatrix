@@ -1,4 +1,4 @@
-package com.flatmatrix.pojos;
+package com.flatmatrix.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -1,7 +1,7 @@
 package com.flatmatrix.dto;
 
-import com.flatmatrix.pojos.Address;
-import com.flatmatrix.pojos.UserRole;
+import com.flatmatrix.entities.Address;
+import com.flatmatrix.entities.UserRole;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

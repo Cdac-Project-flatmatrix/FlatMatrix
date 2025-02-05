@@ -2,9 +2,9 @@ package com.flatmatrix.dto;
 
 import java.util.List;
 
-import com.flatmatrix.pojos.Furnished;
-import com.flatmatrix.pojos.Status;
-import com.flatmatrix.pojos.Type;
+import com.flatmatrix.entities.Furnished;
+import com.flatmatrix.entities.Status;
+import com.flatmatrix.entities.Type;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -8,7 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import com.flatmatrix.pojos.UserRole;
+import com.flatmatrix.entities.UserRole;
 
 public class CustomUserDetails implements UserDetails {
 

@@ -11,8 +11,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.flatmatrix.dao.UserRepository;
-import com.flatmatrix.pojos.User;
+import com.flatmatrix.entities.User;
+import com.flatmatrix.repositories.UserRepository;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;

@@ -1,19 +1,27 @@
 package com.flatmatrix.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.flatmatrix.dto.ApiResponse;
 import com.flatmatrix.dto.GetPropertyDto;
 import com.flatmatrix.dto.PropertyReqDto;
+import com.flatmatrix.dto.PropertyResponseDto;
+import com.flatmatrix.security.CustomUserDetails;
 import com.flatmatrix.service.PropertyService;
 
 import jakarta.validation.Valid;
@@ -45,5 +53,13 @@ public class PropertyController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 	}
-
+	
+	@PreAuthorize("hasRole('SELLER')")
+	@GetMapping("/my")
+    public ResponseEntity<List<PropertyResponseDto>> getMyProperties(@RequestParam(required = false) String status) {
+        CustomUserDetails currentUser = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        logger.info("Fetching properties for logged-in seller with ID: {} and status: {}", currentUser.getUserId(), status);
+        List<PropertyResponseDto> myProperties = propertyService.getPropertiesByUserIdAndStatus(currentUser.getUserId(), status);
+        return ResponseEntity.ok(myProperties);
+    }
 }
