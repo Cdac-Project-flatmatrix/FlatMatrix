@@ -1,4 +1,4 @@
-package com.flatmatrix.pojos;
+package com.flatmatrix.entities;
 
 public enum Type {
 	READY, UNDER_CONSTRUCTION, RESALE

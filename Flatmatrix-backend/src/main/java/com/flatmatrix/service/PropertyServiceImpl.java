@@ -13,14 +13,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.flatmatrix.custom_exception.ResourceNotFoundException;
-import com.flatmatrix.dao.PropertyRepository;
-import com.flatmatrix.dao.UserRepository;
 import com.flatmatrix.dto.ApiResponse;
 import com.flatmatrix.dto.GetPropertyDto;
 import com.flatmatrix.dto.PropertyReqDto;
-import com.flatmatrix.pojos.Property;
-import com.flatmatrix.pojos.PropertyPhotos;
-import com.flatmatrix.pojos.User;
+import com.flatmatrix.dto.PropertyResponseDto;
+import com.flatmatrix.entities.Property;
+import com.flatmatrix.entities.PropertyPhotos;
+import com.flatmatrix.entities.Status;
+import com.flatmatrix.entities.User;
+import com.flatmatrix.entities.UserRole;
+import com.flatmatrix.repositories.PropertyRepository;
+import com.flatmatrix.repositories.UserRepository;
 import com.flatmatrix.specification.PropertySpecification;
 
 @Service
@@ -43,13 +46,19 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Override
     public ApiResponse addProperty(PropertyReqDto propertyDto) {
-        logger.info("Adding property for user ID: {}", propertyDto.getUserid());
+    	logger.info("Adding property for user ID: {}", propertyDto.getUserid());
 
         User user = userDao.findById(propertyDto.getUserid())
                 .orElseThrow(() -> {
                     logger.error("User not found with ID: {}", propertyDto.getUserid());
                     return new ResourceNotFoundException("User not found");
                 });
+
+        if (user.getRole().equals(UserRole.BUYER)) {
+            logger.info("User ID: {} is a BUYER. Updating status to SELLER.", user.getId());
+            user.setRole(UserRole.SELLER);
+            userDao.save(user);
+        }
 
         Property property = mapper.map(propertyDto, Property.class);
         property.setUser(user);
@@ -76,7 +85,6 @@ public class PropertyServiceImpl implements PropertyService {
                 dto.isForRent(), dto.getCity(), dto.getBedRooms(), dto.getType(),
                 dto.getFurnished(), dto.getMinPrice(), dto.getMaxPrice()
         );
-
         List<Property> properties = propertyRepository.findAll(spec);
 
         logger.info("Total properties fetched: {}", properties.size());
@@ -86,5 +94,26 @@ public class PropertyServiceImpl implements PropertyService {
                 .collect(Collectors.toList());
 
         return propertyDtos;
+    }
+    
+    @Override
+    public List<PropertyResponseDto> getPropertiesByUserIdAndStatus(Long userId, String status) {
+    	logger.info("Fetching properties for user ID: {} with status filter: {}", userId, status);
+        List<Property> properties;
+        if (status == null || status.trim().isEmpty()) {
+            properties = propertyRepository.findByUserId(userId);
+        } else {
+            try {
+                Status propertyStatus = Status.valueOf(status.toUpperCase());
+                properties = propertyRepository.findByUserIdAndStatus(userId, propertyStatus);
+            } catch (IllegalArgumentException e) {
+                logger.error("Invalid status value: {}", status);
+                throw new IllegalArgumentException("Invalid status value. Allowed values: AVAILABLE, BOOKED, RENTED, etc.");
+            }
+        }
+        
+        return properties.stream()
+                .map(property -> mapper.map(property, PropertyResponseDto.class))
+                .collect(Collectors.toList());
     }
 }

@@ -10,15 +10,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.flatmatrix.custom_exception.ResourceNotFoundException;
-import com.flatmatrix.dao.AddressRepository;
-import com.flatmatrix.dao.UserRepository;
 import com.flatmatrix.dto.AddressDto;
 import com.flatmatrix.dto.ApiResponse;
 import com.flatmatrix.dto.JwtResponse;
 import com.flatmatrix.dto.LoginDto;
 import com.flatmatrix.dto.UserDto;
 import com.flatmatrix.dto.UserDtoOnLongin;
-import com.flatmatrix.pojos.User;
+import com.flatmatrix.entities.User;
+import com.flatmatrix.repositories.AddressRepository;
+import com.flatmatrix.repositories.UserRepository;
 import com.flatmatrix.security.CustomUserDetails;
 import com.flatmatrix.security.JWTHelper;
 

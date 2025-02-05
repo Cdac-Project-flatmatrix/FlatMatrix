@@ -1,6 +1,6 @@
 package com.flatmatrix.dto;
 
-import com.flatmatrix.pojos.UserRole;
+import com.flatmatrix.entities.UserRole;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
