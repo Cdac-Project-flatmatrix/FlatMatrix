@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.flatmatrix.custom_exception.ResourceNotFoundException;
 import com.flatmatrix.dto.ApiResponse;
 import com.flatmatrix.dto.GetPropertyDto;
+import com.flatmatrix.dto.PropertyPhotosDto;
 import com.flatmatrix.dto.PropertyReqDto;
 import com.flatmatrix.dto.PropertyResponseDto;
 import com.flatmatrix.entities.Property;
@@ -22,8 +23,10 @@ import com.flatmatrix.entities.PropertyPhotos;
 import com.flatmatrix.entities.Status;
 import com.flatmatrix.entities.User;
 import com.flatmatrix.entities.UserRole;
+import com.flatmatrix.repositories.PropertyPhotosRepository;
 import com.flatmatrix.repositories.PropertyRepository;
 import com.flatmatrix.repositories.UserRepository;
+import com.flatmatrix.security.CustomUserDetails;
 import com.flatmatrix.specification.PropertySpecification;
 
 @Service
@@ -43,6 +46,9 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Autowired
     private PropertyRepository propertyRepository;
+    
+    @Autowired
+    private PropertyPhotosRepository propertyPhotosRepository;
 
     @Override
     public ApiResponse addProperty(PropertyReqDto propertyDto) {
@@ -115,5 +121,50 @@ public class PropertyServiceImpl implements PropertyService {
         return properties.stream()
                 .map(property -> mapper.map(property, PropertyResponseDto.class))
                 .collect(Collectors.toList());
+    }
+    
+    public ApiResponse updateProperty(Long propertyId, PropertyReqDto propertyDto, CustomUserDetails currentUser) {
+        Property property = propertyRepository.findById(propertyId)
+                .orElseThrow(() -> new ResourceNotFoundException("Property not found with ID: " + propertyId));
+
+        if (!property.getUser().getId().equals(currentUser.getUserId())) {
+            throw new SecurityException("You are not authorized to update this property.");
+        }
+
+        mapper.map(propertyDto, property);
+        propertyRepository.save(property);
+
+        return new ApiResponse("Property updated successfully.");
+    }
+
+    public ApiResponse deleteProperty(Long propertyId, CustomUserDetails currentUser) {
+        Property property = propertyRepository.findById(propertyId)
+                .orElseThrow(() -> new ResourceNotFoundException("Property not found with ID: " + propertyId));
+
+        if (!property.getUser().getId().equals(currentUser.getUserId())) {
+            throw new SecurityException("You are not authorized to delete this property.");
+        }
+
+        propertyRepository.delete(property);
+        return new ApiResponse("Property deleted successfully.");
+    }
+    
+    public ApiResponse uploadPhoto(Long propertyId, PropertyPhotosDto photoDto, CustomUserDetails currentUser) {
+        Property property = propertyRepository.findById(propertyId)
+                .orElseThrow(() -> new ResourceNotFoundException("Property not found with ID: " + propertyId));
+
+        // Check if the logged-in user is the owner
+        if (!property.getUser().getId().equals(currentUser.getUserId())) {
+            throw new SecurityException("You are not authorized to upload photos for this property.");
+        }
+
+        // Create and save Property Photo
+        PropertyPhotos photo = new PropertyPhotos();
+        photo.setUrl(photoDto.getUrl());
+        photo.setProperty(property);
+
+        propertyPhotosRepository.save(photo);
+
+        return new ApiResponse("Photo uploaded successfully.");
     }
 }
