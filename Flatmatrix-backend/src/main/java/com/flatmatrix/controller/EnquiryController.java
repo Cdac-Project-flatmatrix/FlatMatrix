@@ -3,6 +3,9 @@ package com.flatmatrix.controller;
 import com.flatmatrix.dto.EnquiryDto;
 import com.flatmatrix.security.CustomUserDetails;
 import com.flatmatrix.service.EnquiryService;
+import com.flatmatrix.service.EnquiryServiceImpl;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -12,13 +15,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/enquiries")
+@CrossOrigin(origins = "http://localhost:3000")
 public class EnquiryController {
 
-    private final EnquiryService enquiryService;
-
-    public EnquiryController(EnquiryService enquiryService) {
-        this.enquiryService = enquiryService;
-    }
+	@Autowired
+    private EnquiryService enquiryService;
 
     @PostMapping
 //    @PreAuthorize("hasRole('BUYER')")

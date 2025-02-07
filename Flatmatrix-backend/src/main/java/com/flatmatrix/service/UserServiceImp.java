@@ -26,14 +26,13 @@ import com.flatmatrix.security.JWTHelper;
 @Transactional
 public class UserServiceImp implements UserService {
 	@Autowired
-	private  AuthenticationManager authenticationManager;
+	private AuthenticationManager authenticationManager;
 
-    
-    @Autowired
-    private PasswordEncoder encoder;
-    @Autowired
-    private JWTHelper jwtHelper;
-    
+	@Autowired
+	private PasswordEncoder encoder;
+	@Autowired
+	private JWTHelper jwtHelper;
+
 	@Autowired
 	UserRepository userDao;
 
@@ -60,22 +59,16 @@ public class UserServiceImp implements UserService {
 		userDao.save(user);
 		return new ApiResponse("Registered successfully");
 	}
-	
+
 	public CustomUserDetails loadCustomUserDetailsByUsername(String username) {
-        User user = userDao.findByUserName(username)
-                .orElseThrow(() -> new RuntimeException("User not found with username: " + username));
+		User user = userDao.findByUserName(username)
+				.orElseThrow(() -> new RuntimeException("User not found with username: " + username));
 
-        return new CustomUserDetails(
-                user.getId(),
-                user.getUserName(),
-                user.getPassword(),
-                user.getRole()
-        );
-    }
+		return new CustomUserDetails(user.getId(), user.getUserName(), user.getPassword(), user.getRole());
+	}
 
-
-    public JwtResponse authenticateUser(LoginDto request) {
-    	
+	public JwtResponse authenticateUser(LoginDto request) {
+		System.out.println(request.toString());
 //    	System.out.println("In authetication user 1");
 //    	CustomUserDetails customUserDetails = this.loadCustomUserDetailsByUsername(request.getUsername());
 //    	System.out.println("In authetication user 2");
@@ -84,26 +77,26 @@ public class UserServiceImp implements UserService {
 //        return JwtResponse.builder()
 //                .token(token)
 //                .build();
-    	authenticateWithUsernamePassword(request.getUsername(), request.getPassword());
+		
+		authenticateWithUsernamePassword(request.getUsername(), request.getPassword());
 
-        CustomUserDetails customUserDetails = this.loadCustomUserDetailsByUsername(request.getUsername());
+		CustomUserDetails customUserDetails = this.loadCustomUserDetailsByUsername(request.getUsername());
 
-        String token = jwtHelper.generateToken(customUserDetails);
-        return JwtResponse.builder()
-                .token(token)
-                .build();
-    }
+		String token = jwtHelper.generateToken(customUserDetails);
+		System.out.println("token");
+		return JwtResponse.builder().token(token).build();
+	}
 
-    public void authenticateWithUsernamePassword(String username, String password) {
-    	
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
-
-        try {
-            authenticationManager.authenticate(authenticationToken);
-        } catch (BadCredentialsException e) {
-            throw new BadCredentialsException("Invalid Username or Password!");
-        }
-    }
+	public void authenticateWithUsernamePassword(String username, String password) {
+		
+		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,
+				password);
+		try {
+			authenticationManager.authenticate(authenticationToken);
+		} catch (BadCredentialsException e) {
+			throw new BadCredentialsException("Invalid Username or Password!");
+		}
+	}
 //	@Override
 //	public UserDtoOnLongin login(LoginDto dto) {
 //		User user = userDao.findByUserName(dto.getUsername())

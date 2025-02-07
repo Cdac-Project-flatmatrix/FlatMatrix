@@ -1,6 +1,6 @@
 package com.flatmatrix.controller;
 
-import com.flatmatrix.service.WishlistService;
+import com.flatmatrix.service.WishlistServiceImpl;
 import com.flatmatrix.dto.PropertyResponseDto;
 import com.flatmatrix.security.CustomUserDetails;
 
@@ -14,13 +14,14 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/wishlist")
+@CrossOrigin(origins = "http://localhost:3000")
 public class WishlistController {
 
     private static final Logger logger = LoggerFactory.getLogger(WishlistController.class);
 
-    private final WishlistService wishlistService;
+    private final WishlistServiceImpl wishlistService;
 
-    public WishlistController(WishlistService wishlistService) {
+    public WishlistController(WishlistServiceImpl wishlistService) {
         this.wishlistService = wishlistService;
     }
 
