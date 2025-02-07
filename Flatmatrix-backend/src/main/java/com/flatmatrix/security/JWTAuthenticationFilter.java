@@ -24,84 +24,80 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
-    private Logger logger = LoggerFactory.getLogger(JWTAuthenticationFilter.class);
+	private Logger logger = LoggerFactory.getLogger(JWTAuthenticationFilter.class);
 
-    @Autowired
-    private JWTHelper jwtHelper;
+	@Autowired
+	private JWTHelper jwtHelper;
 
-    @Autowired
-    private UserRepository userRepository;
+	@Autowired
+	private UserRepository userRepository;
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-            throws ServletException, IOException {
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+			throws ServletException, IOException {
 
-        String requestURI = request.getRequestURI();
-        logger.info("Request URI: {}", requestURI);
+		String requestURI = request.getRequestURI();
+		logger.info("Request URI: {}", requestURI);
+		if (requestURI.startsWith("/swagger-ui") || requestURI.startsWith("/v3/api-docs")
+				|| requestURI.startsWith("/auth/register") || requestURI.startsWith("/auth/login")) {
+			System.out.println("Going further from filter");
+			chain.doFilter(request, response);
+			return;
+		}
+		String token = request.getHeader("Authorization");
+		logger.info("Authorization Header:  {}", token);
 
-        
-        // Skip Swagger UI and docs endpoints for authentication
-        if (requestURI.startsWith("/flatmatrix/swagger-ui") || requestURI.startsWith("/flatmatrix/v3/api-docs") || requestURI.startsWith("flatmatrix/auth/register") || requestURI.startsWith("/flatmatrix/auth/login")) {
-        	System.out.println("Going further from filter");
-            chain.doFilter(request, response);
-            return;
-        }
+		if (token != null && token.startsWith("Bearer ")) {
+			token = token.substring(7).trim();
+			Long userId = null;
 
-        String token = request.getHeader("Authorization");
-        logger.info("Authorization Header:  {}", token);
-        
-        if (token != null && token.startsWith("Bearer ")) {
-            token = token.substring(7).trim();
-            Long userId = null;
+			try {
+				userId = jwtHelper.getUserIdFromToken(token);
+			} catch (IllegalArgumentException e) {
+				logger.error("Illegal Argument while fetching the user ID from the token.", e);
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid Token Format");
+				return;
+			} catch (ExpiredJwtException e) {
+				logger.error("The provided JWT token has expired.", e);
+				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token Expired");
+				return;
+			} catch (MalformedJwtException e) {
+				logger.error("The provided JWT token is malformed.", e);
+				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Malformed Token");
+				return;
+			} catch (Exception e) {
+				logger.error("An error occurred while processing the token.", e);
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Token Processing Error");
+				return;
+			}
 
-            try {
-                userId = jwtHelper.getUserIdFromToken(token); 
-            } catch (IllegalArgumentException e) {
-                logger.error("Illegal Argument while fetching the user ID from the token.", e);
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid Token Format");
-                return;
-            } catch (ExpiredJwtException e) {
-                logger.error("The provided JWT token has expired.", e);
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token Expired");
-                return;
-            } catch (MalformedJwtException e) {
-                logger.error("The provided JWT token is malformed.", e);
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Malformed Token");
-                return;
-            } catch (Exception e) {
-                logger.error("An error occurred while processing the token.", e);
-                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Token Processing Error");
-                return;
-            }
+			if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+				User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
 
-            if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                User user = userRepository.findById(userId)
-                        .orElseThrow(() -> new RuntimeException("User not found"));
+				CustomUserDetails customUserDetails = new CustomUserDetails(user.getId(), user.getUserName(),
+						user.getPassword(), user.getRole());
 
-                CustomUserDetails customUserDetails = new CustomUserDetails(
-                        user.getId(), user.getUserName(), user.getPassword(), user.getRole());
+				// Validate token
+				boolean isTokenValid = this.jwtHelper.validateToken(token, customUserDetails);
+				if (isTokenValid) {
+					UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+							customUserDetails, null, customUserDetails.getAuthorities());
+					authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-                // Validate token
-                boolean isTokenValid = this.jwtHelper.validateToken(token, customUserDetails);
-                if (isTokenValid) {
-                    UsernamePasswordAuthenticationToken authentication =
-                            new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
-                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+					SecurityContextHolder.getContext().setAuthentication(authentication);
+					logger.info("User successfully authenticated: {}", user.getUserName());
+				} else {
+					logger.info("JWT Token validation failed for user: {}", user.getUserName());
+					response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid Token");
+					return;
+				}
+			}
+		} else {
+			logger.warn("Authorization token not found or malformed.");
+			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authorization Token Missing or Invalid");
+			return;
+		}
 
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                    logger.info("User successfully authenticated: {}", user.getUserName());
-                } else {
-                    logger.info("JWT Token validation failed for user: {}", user.getUserName());
-                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid Token");
-                    return;
-                }
-            }
-        } else {
-            logger.warn("Authorization token not found or malformed.");
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authorization Token Missing or Invalid");
-            return;
-        }
-
-        chain.doFilter(request, response);
-    }
+		chain.doFilter(request, response);
+	}
 }

@@ -23,9 +23,9 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-public class WishlistService {
+public class WishlistServiceImpl{
 
-    private static final Logger logger = LoggerFactory.getLogger(WishlistService.class);
+    private static final Logger logger = LoggerFactory.getLogger(WishlistServiceImpl.class);
 
     @Autowired
     private WishlistRepository wishlistRepository;

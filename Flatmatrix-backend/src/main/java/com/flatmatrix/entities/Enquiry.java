@@ -17,8 +17,12 @@ public class Enquiry extends BaseEntity {
     @JoinColumn(nullable = false)
     private User buyer;
 
+    @Column(columnDefinition = "TEXT")
     private String message;
-
+    
+    @Column(columnDefinition = "TEXT")
+    private String reply;
+    
     @Enumerated(EnumType.STRING)
     private EnquiryStatus status; 
     private boolean isRead; 
