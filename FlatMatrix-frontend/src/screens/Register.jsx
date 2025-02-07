@@ -22,8 +22,7 @@ function Register() {
       longitude: "",
       latitude: "",
     },
-
-    profilePhoto: null,
+    profilePhoto: "",
   });
 
   const navigate = useNavigate();
@@ -59,7 +58,6 @@ function Register() {
       !user.email ||
       !user.password ||
       !user.userName ||
-      !user.role ||
       !user.profilePhoto
     ) {
       toast.warning("Please fill all required fields and upload a photo.");
@@ -75,6 +73,7 @@ function Register() {
     };
 
     try {
+      console.log(userData);
       const result = await register(userData);
       if (result.status === "success") {
         toast.success("Registration successful!");

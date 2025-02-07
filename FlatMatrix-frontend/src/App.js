@@ -21,6 +21,9 @@ import PropertyDetails from './screens/PropertyDetails';
 import PropertyAdd from './screens/PropertyAdd';
 import PropertyUpdate from './screens/PropertyUpdate';
 import MyProperties from './screens/MyProperties';
+import 'react-toastify/dist/ReactToastify.css'
+import { ToastContainer } from 'react-toastify';
+
 
 
 function App() {
@@ -53,6 +56,7 @@ function App() {
           <Route path="/property-update" element={<PropertyUpdate />} />
           <Route path="/my-properties" element={<MyProperties />} />
         </Routes>
+        <ToastContainer/>
       </div>
     </div>
   );
