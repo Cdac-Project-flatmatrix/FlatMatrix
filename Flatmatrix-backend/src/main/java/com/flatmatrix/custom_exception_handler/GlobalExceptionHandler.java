@@ -15,21 +15,25 @@ public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+		e.printStackTrace();
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage()));
 	}
  
 	@ExceptionHandler(ResourceNotFoundException.class)
 	public ResponseEntity<?> handleResourceNotFoundException(ResourceNotFoundException e) {
+		e.printStackTrace();
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage()));
 	}
 	
 	@ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<?> exceptionHandler(BadCredentialsException e) {
+		e.printStackTrace();
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ApiResponse(e.getMessage()));
     }
 
 	@ExceptionHandler(RuntimeException.class)
 	public ResponseEntity<?> handleRemainingExceptions(RuntimeException e) {
+		e.printStackTrace();
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage()));
 	}
 
