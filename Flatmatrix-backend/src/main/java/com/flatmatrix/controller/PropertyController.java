@@ -72,13 +72,13 @@ public class PropertyController {
         return ResponseEntity.ok(myProperties);
     }
 	
-    @PutMapping("/{propertyId}")
+    @PostMapping("/{propertyId}")
     @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<ApiResponse> updateProperty(
             @PathVariable Long propertyId, 
-            @RequestBody PropertyReqDto propertyDto,
+            @RequestBody PropertyResponseDto propertyDto,
             @AuthenticationPrincipal CustomUserDetails currentUser) {
-
+    	System.out.println(propertyDto);
         ApiResponse response = propertyService.updateProperty(propertyId, propertyDto, currentUser);
         return ResponseEntity.ok(response);
     }

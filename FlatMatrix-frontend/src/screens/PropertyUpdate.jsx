@@ -1,26 +1,31 @@
 import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import "../styles/PropertyUpdate.css";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { updateMyProperty } from "../services/property";
 const PropertyUpdate = () => {
-  const [property, setProperty] = useState({
-    address: {
-      street: "123 Main St",
-      city: "Pune",
-      state: "Maharashtra",
-      country: "India",
-      pinCode: 411057,
-    },
-    price: 5000000,
-    size: 1500,
-    bedRooms: 3,
-    type: "READY",
-    status: "AVAILABLE",
-    furnished: "SEMI_FURNISHED",
-    description: "Spacious 3BHK with modern amenities.",
-    forRent: false,
-    photo: null,
-  });
+  // const [property, setProperty] = useState({
+  //   address: {
+  //     street: "123 Main St",
+  //     city: "Pune",
+  //     state: "Maharashtra",
+  //     country: "India",
+  //     pinCode: 411057,
+  //   },
+  //   price: 5000000,
+  //   size: 1500,
+  //   bedRooms: 3,
+  //   type: "READY",
+  //   status: "AVAILABLE",
+  //   furnished: "SEMI_FURNISHED",
+  //   description: "Spacious 3BHK with modern amenities.",
+  //   forRent: false,
+  //   photo: null,
+  // });
+
+
+  const location = useLocation();
+  const [property, setProperty] = useState(location.state || {});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,6 +46,19 @@ const PropertyUpdate = () => {
     console.log("Updated Property Details:", property);
     alert("Property updated successfully!");
   };
+
+  const navigate = useNavigate();
+  const onUpdate = async()=>{
+      const response = await updateMyProperty(property);
+      console.log(response.data);
+      if(response.status === 200){
+        alert("Property updated successfully");
+        navigate("/my-properties");
+      }
+      else{
+        alert(response.data);
+      }
+  }
 
   return (
     <div className="update-container-wrapper">
@@ -161,7 +179,7 @@ const PropertyUpdate = () => {
             </div>
           )}
 
-          <Link
+          {/* <Link
             to="/my-properties"
             className="btn btn-light buy-btn mb-5"
             style={{
@@ -171,7 +189,18 @@ const PropertyUpdate = () => {
             }}
           >
             Update Property
-          </Link>
+          </Link> */}
+
+          <button
+            className="btn btn-light buy-btn mb-5"
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              width: "100%",
+            }} onClick={onUpdate}
+          >
+            Update Property
+          </button>
         </form>
       </div>
     </div>

@@ -1,42 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/Wishlist.css";
-import image from "../screens/image.jpg";
-import image1 from "../screens/image1.jpeg";
-import image2 from "../screens/image2.jpeg";
-import image3 from "../screens/image3.jpeg";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { getWishlist, removeWishlist } from "../services/property";
 
 function Wishlist() {
-  const properties = [
-    {
-      id: 1,
-      name: "Sunset Villa",
-      rate: "$500,000",
-      address: "123 Sunset Blvd, Pune",
-      image: image,
-    },
-    {
-      id: 2,
-      name: "Urban Heights",
-      rate: "$350,000",
-      address: "456 Urban Rd, Mumbai",
-      image: image1,
-    },
-    {
-      id: 3,
-      name: "Urban Heights",
-      rate: "$350,000",
-      address: "456 Urban Rd, Mumbai",
-      image: image2,
-    },
-    {
-      id: 4,
-      name: "Urban Heights",
-      rate: "$350,000",
-      address: "456 Urban Rd, Mumbai",
-      image: image3,
-    },
-  ];
+  const [properties, setProperties] = useState([]);
+  const location = useLocation();
+  const navigation = useNavigate();
+
+  const onLoad = async () => {
+    try {
+      const response = await getWishlist();
+      if (response.status === 200) {
+        setProperties(response.data);
+        console.log(response.data);
+      }
+    } catch (error) {
+      alert("Error while fetching data");
+      setProperties([]);
+    }
+  };
+
+  const propertiesDetail = (property) => {
+    console.log(property);
+    navigation("/propertyDetails", { state: property });
+  };
+  useEffect(() => {
+    onLoad();
+  }, [location.state]);
+
+  const onRemove = async (id) => {
+    const response = await removeWishlist(id);
+    if (response.status === 200) {
+      alert("property removed from wishlist");
+      setProperties((prevProperties) =>
+        prevProperties.filter((p) => p.id !== id)
+      );
+    }
+  };
 
   return (
     <div className="wishlist-container-wrapper">
@@ -48,25 +49,31 @@ function Wishlist() {
               <span className="wishlist-item-number">{index + 1}</span>
               <div className="wishlist-item-content">
                 <img
-                  src={property.image}
+                  src={property.photos[0].imageUrl}
                   alt={property.name}
                   className="wishlist-item-image"
                 />
                 <div className="wishlist-item-details">
                   <h4>{property.name}</h4>
-                  <p>Price: {property.rate}</p>
-                  <p>Address: {property.address}</p>
+                  <p>Price: {property.price}</p>
+                  <p>Address: {property.address.city}</p>
                   <div className="button-container row">
                     <div className="col d-flex gap-3">
                       <div className="">
-                        <Link
+                        {/* <Link
                           to="/propertyDetails"
                           className="btn btn-info m-2 silent-btn"
                         >
                           Get Details
-                        </Link>
+                        </Link> */}
+                        <button
+                          className="btn btn-info m-2 silent-btn"
+                          onClick={() => propertiesDetail(property)}
+                        >
+                          Get Details
+                        </button>
                       </div>
-                      <div className="">
+                      {/* <div className="">
                         <Link
                           to="/property-update"
                           className="btn btn-info m-2 silent-btn"
@@ -76,7 +83,18 @@ function Wishlist() {
                           }}
                         >
                           Remove
-                        </Link>
+                        </Link> */}
+                      <div className="">
+                        <button
+                          className="btn btn-info m-2 silent-btn"
+                          style={{
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
+                          onClick={() => onRemove(property.id)}
+                        >
+                          Remove
+                        </button>
                       </div>
                     </div>
                   </div>

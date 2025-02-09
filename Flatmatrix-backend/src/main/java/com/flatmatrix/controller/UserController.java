@@ -43,6 +43,7 @@ public class UserController {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(userService.authenticateUser(request));
 		} catch (RuntimeException e) {
+			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
 	}

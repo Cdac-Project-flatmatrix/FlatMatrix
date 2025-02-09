@@ -58,7 +58,8 @@ public class UserServiceImp implements UserService {
 		if (f_user != null) {
 			throw new ResourceNotFoundException("username already taken");
 		}
-
+		user.setRole(UserRole.BUYER);
+		user.setPassword(encoder.encode(user.getPassword()));
 		userDao.save(user);
 		return new ApiResponse("Registered successfully");
 	}
@@ -80,7 +81,7 @@ public class UserServiceImp implements UserService {
 		System.out.println("token");
 		return JwtResponse.builder().token(token).build();
 	}
-
+		
 	public void authenticateWithUsernamePassword(String username, String password) {
 
 		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,

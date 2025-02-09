@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { login } from "../services/user";
 import { toast } from "react-toastify";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -15,16 +15,19 @@ function Login() {
     } else if (password.length == 0) {
       toast.warning("Please enter password");
     } else {
-      const result = await login(email, password);
-
-      if (result.status === 200) {
-        const data = result["data"];
-        const token = data["token"];
-        sessionStorage["token"] = token;
-        toast.success("welcome to the application");
-        navigate("/profile");
-      } else {
-        toast.error(result["error"]);
+      try {
+        const result = await login(email, password);
+        if (result.status === 200) {
+          const data = result["data"];
+          const token = data["token"];
+          sessionStorage["token"] = token;
+          toast.success("welcome to the application");
+          navigate('/');
+        } else {
+          toast.error(result["error"]);
+        }
+      } catch (error) {
+        toast.error(error);
       }
     }
   };

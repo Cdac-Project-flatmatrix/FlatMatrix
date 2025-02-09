@@ -1,27 +1,9 @@
 import React, { useState } from "react";
 import "../styles/PropertyDetails.css";
 import { useLocation } from "react-router-dom";
-import { addTowishlist } from "../services/property";
 
-const PropertyDetails = () => {
-  // const propertyData = {
-  //   address: {
-  //     street: "123 Main St",
-  //     city: "Pune",
-  //     state: "Maharashtra",
-  //     country: "India",
-  //     pinCode: 411057,
-  //   },
-  //   price: 5000000,
-  //   size: 1500,
-  //   bedRooms: 3,
-  //   type: "READY",
-  //   status: "AVAILABLE",
-  //   furnished: "SEMI_FURNISHED",
-  //   description: "Spacious 3BHK with modern amenities.",
-  //   forRent: false,
-  //   photos: [Image1, Image2, Image3],
-  // };
+const MyPropertyDetails = () => {
+
   const location = useLocation();
   const propertyData = location.state || {};
 
@@ -34,17 +16,7 @@ const PropertyDetails = () => {
       setCurrentImageIndex(0);
     }
   };
-  const [mesg, setMesg] = useState("");
-  const onAdd = async (id) => {
-    console.log(id);
-    const response = await addTowishlist(id);
-    if (response.status === 200) {
-      setMesg(response.data);
-      alert(response.data);
-    } else {
-      alert("failed to add");
-    }
-  };
+
   const prevImage = () => {
     if (currentImageIndex > 0) {
       setCurrentImageIndex(currentImageIndex - 1);
@@ -84,7 +56,7 @@ const PropertyDetails = () => {
               <div className="row">
                 <div className="col" style={{ textAlign: "left" }}>
                   <p>
-                    <strong>Price:</strong> ₹{propertyData.id}
+                    <strong>Price:</strong> ₹{propertyData.price}
                   </p>
                   <p>
                     <strong>Size:</strong> {propertyData.size} sq.ft.
@@ -133,31 +105,18 @@ const PropertyDetails = () => {
               </p>
             </div>
 
-            <div className="card property-details-button-wrapper">
+            {/* <div className="card property-details-button-wrapper">
               <div className="row">
                 <div className="col d-flex gap-3">
-                  {mesg === "Property added to wishlist successfully." ||
-                  mesg === "Property is already in wishlist." ? (
-                    <button
-                      onClick={() => onAdd(propertyData.id)}
-                      className="btn btn-outline-dark h-100 py-2 silent-btn"
-                    >
-                      Added
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => onAdd(propertyData.id)}
-                      className="btn btn-outline-dark h-100 py-2 silent-btn"
-                    >
-                      Add to Wishlist
-                    </button>
-                  )}
+                  <button className="btn btn-outline-dark h-100 py-2 silent-btn">
+                    Add to Wishlist
+                  </button>
                   <button className="btn btn-outline-dark h-100 py-2 silent-btn">
                     Contact Owner
                   </button>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="col"></div>
@@ -166,4 +125,4 @@ const PropertyDetails = () => {
   );
 };
 
-export default PropertyDetails;
+export default MyPropertyDetails;

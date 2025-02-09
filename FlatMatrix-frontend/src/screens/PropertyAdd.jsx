@@ -85,7 +85,7 @@ const PropertyAdd = () => {
           (error) => reject(error),
           async () => {
             const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-            resolve({ photoUrl: downloadURL }); // Store only the photoUrl
+            resolve({ imageUrl: downloadURL }); // Store only the photoUrl
           }
         );
       });
@@ -131,29 +131,53 @@ const PropertyAdd = () => {
         <form onSubmit={handleSubmit} className="scrollable-form">
           {/* Property Details */}
           <div className="half-width">
-            <input type="number" name="price" placeholder="Price ($)" onChange={handleChange} />
+            <input
+              type="number"
+              name="price"
+              placeholder="Price ($)"
+              onChange={handleChange}
+            />
           </div>
           <div className="half-width">
-            <input type="number" name="size" placeholder="Size (sq. ft.)" onChange={handleChange} />
+            <input
+              type="number"
+              name="size"
+              placeholder="Size (sq. ft.)"
+              onChange={handleChange}
+            />
           </div>
           <div className="half-width">
-            <input type="number" name="bedRooms" placeholder="Bedrooms" onChange={handleChange} />
+            <input
+              type="number"
+              name="bedRooms"
+              placeholder="Bedrooms"
+              onChange={handleChange}
+            />
           </div>
           <div className="half-width">
             <select name="type" onChange={handleChange} value={property.type}>
               <option value="READY">Ready</option>
               <option value="UNDER_CONSTRUCTION">Under Construction</option>
+              <option value="RESALE">Resale</option>
             </select>
           </div>
           <div className="half-width">
-            <select name="status" onChange={handleChange} value={property.status}>
+            <select
+              name="status"
+              onChange={handleChange}
+              value={property.status}
+            >
               <option value="AVAILABLE">Available</option>
               <option value="SOLD">Sold</option>
               <option value="RENTED">Rented</option>
             </select>
           </div>
           <div className="half-width">
-            <select name="furnished" onChange={handleChange} value={property.furnished}>
+            <select
+              name="furnished"
+              onChange={handleChange}
+              value={property.furnished}
+            >
               <option value="SEMI_FURNISHED">Semi-Furnished</option>
               <option value="FULLY_FURNISHED">Fully Furnished</option>
               <option value="UNFURNISHED">Unfurnished</option>
@@ -162,35 +186,72 @@ const PropertyAdd = () => {
 
           {/* Address Fields */}
           <div className="half-width">
-            <input type="text" name="street" placeholder="Street" onChange={handleChange} />
+            <input
+              type="text"
+              name="street"
+              placeholder="Street"
+              onChange={handleChange}
+            />
           </div>
           <div className="half-width">
-            <input type="text" name="city" placeholder="City" onChange={handleChange} />
+            <input
+              type="text"
+              name="city"
+              placeholder="City"
+              onChange={handleChange}
+            />
           </div>
           <div className="half-width">
-            <input type="text" name="state" placeholder="State" onChange={handleChange} />
+            <input
+              type="text"
+              name="state"
+              placeholder="State"
+              onChange={handleChange}
+            />
           </div>
           <div className="half-width">
-            <input type="text" name="country" placeholder="Country" onChange={handleChange} />
+            <input
+              type="text"
+              name="country"
+              placeholder="Country"
+              onChange={handleChange}
+            />
           </div>
           <div className="half-width">
-            <input type="text" name="pinCode" placeholder="Pin Code" onChange={handleChange} />
-          </div>
-
-          <div className="full-width">
-            <textarea 
-              name="description" 
-              placeholder="Description" 
-              onChange={handleChange} 
-              rows="4" 
-              cols="30"
-              style={{ width: "100%", height: "100px", resize: "vertical" }} 
+            <input
+              type="text"
+              name="pinCode"
+              placeholder="Pin Code"
+              onChange={handleChange}
             />
           </div>
 
           <div className="full-width">
-            <label style={{ display: "flex", alignItems: "center", whiteSpace: "nowrap", gap: "5px" }}>
-              <input type="checkbox" name="forRent" checked={property.forRent} onChange={handleChange} />
+            <textarea
+              name="description"
+              placeholder="Description"
+              onChange={handleChange}
+              rows="4"
+              cols="30"
+              style={{ width: "100%", height: "100px", resize: "vertical" }}
+            />
+          </div>
+
+          <div className="full-width">
+            <label
+              style={{
+                display: "flex",
+                alignItems: "center",
+                whiteSpace: "nowrap",
+                gap: "5px",
+              }}
+            >
+              <input
+                type="checkbox"
+                name="forRent"
+                checked={property.forRent}
+                onChange={handleChange}
+              />
               For Rent?
             </label>
           </div>
@@ -206,13 +267,20 @@ const PropertyAdd = () => {
             <div className="image-preview-container">
               {imageFiles.map((file, index) => (
                 <div key={index} className="image-preview">
-                  <img src={URL.createObjectURL(file)} alt={`Property ${index + 1}`} />
+                  <img
+                    src={URL.createObjectURL(file)}
+                    alt={`Property ${index + 1}`}
+                  />
                 </div>
               ))}
             </div>
           )}
 
-          <button type="submit" className="btn btn-primary" disabled={uploading}>
+          <button
+            type="submit"
+            className="btn btn-primary"
+            disabled={uploading}
+          >
             {uploading ? "Uploading..." : "Add Property"}
           </button>
         </form>
