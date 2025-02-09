@@ -1,6 +1,10 @@
 package com.flatmatrix.service;
 
+import java.util.Base64;
+
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -10,13 +14,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.flatmatrix.custom_exception.ResourceNotFoundException;
-import com.flatmatrix.dto.AddressDto;
 import com.flatmatrix.dto.ApiResponse;
 import com.flatmatrix.dto.JwtResponse;
 import com.flatmatrix.dto.LoginDto;
 import com.flatmatrix.dto.UserDto;
-import com.flatmatrix.dto.UserDtoOnLongin;
 import com.flatmatrix.entities.User;
+import com.flatmatrix.entities.UserRole;
 import com.flatmatrix.repositories.AddressRepository;
 import com.flatmatrix.repositories.UserRepository;
 import com.flatmatrix.security.CustomUserDetails;
@@ -42,20 +45,20 @@ public class UserServiceImp implements UserService {
 	@Autowired
 	ModelMapper modelMapper;
 
+	private Logger logger = LoggerFactory.getLogger(UserServiceImp.class);
+
 	@Override
 	public ApiResponse newUser(UserDto userDto) {
 		User user = modelMapper.map(userDto, User.class);
-		User f_user = userDao.findByEmail(user.getEmail()).orElse(null);
-
+		User f_user = userDao.findByEmail(user.getEmail()).orElseGet(() -> null);
 		if (f_user != null) {
 			throw new ResourceNotFoundException("email already exist");
 		}
-
 		f_user = userDao.findByUserName(user.getUserName()).orElse(null);
 		if (f_user != null) {
 			throw new ResourceNotFoundException("username already taken");
 		}
-		user.setPassword(encoder.encode(user.getPassword()));
+
 		userDao.save(user);
 		return new ApiResponse("Registered successfully");
 	}
@@ -68,16 +71,7 @@ public class UserServiceImp implements UserService {
 	}
 
 	public JwtResponse authenticateUser(LoginDto request) {
-		System.out.println(request.toString());
-//    	System.out.println("In authetication user 1");
-//    	CustomUserDetails customUserDetails = this.loadCustomUserDetailsByUsername(request.getUsername());
-//    	System.out.println("In authetication user 2");
-//        String token = jwtHelper.generateToken(customUserDetails);
-//        System.out.println("In authetication user 3");
-//        return JwtResponse.builder()
-//                .token(token)
-//                .build();
-		
+
 		authenticateWithUsernamePassword(request.getUsername(), request.getPassword());
 
 		CustomUserDetails customUserDetails = this.loadCustomUserDetailsByUsername(request.getUsername());
@@ -88,7 +82,7 @@ public class UserServiceImp implements UserService {
 	}
 
 	public void authenticateWithUsernamePassword(String username, String password) {
-		
+
 		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,
 				password);
 		try {
@@ -97,17 +91,4 @@ public class UserServiceImp implements UserService {
 			throw new BadCredentialsException("Invalid Username or Password!");
 		}
 	}
-//	@Override
-//	public UserDtoOnLongin login(LoginDto dto) {
-//		User user = userDao.findByUserName(dto.getUsername())
-//				.orElseThrow(() -> new ResourceNotFoundException("username not found"));
-//
-//		if (!user.getPassword().equals(dto.getPassword())) {
-//			throw new ResourceNotFoundException("Wrong password");
-//		}
-//		System.out.println(user);
-//		UserDtoOnLongin returnDto = modelMapper.map(user, UserDtoOnLongin.class);
-//		returnDto.setAddress(modelMapper.map(user.getAddress(), AddressDto.class));
-//		return returnDto;
-//	}
 }

@@ -19,22 +19,21 @@ export async function login(username, password) {
   }
 }
 
-export async function register(firstName, lastName, email, phone, password) {
+export async function register(userDto) {
   try {
-    const url = createUrl("user/register");
+    const url = createUrl("auth/register");
     const body = {
-      firstName,
-      lastName,
-      email,
-      phone,
-      password,
+      userDto,
     };
-    const response = await axios.post(url, body);
-    return response.data;
+    console.log("Sending:", body);
+    // userDto.profilePhoto=userDto.profilePhoto.path
+    const response = await axios.post(url, userDto);
+    return response;
   } catch (ex) {
     return { status: "error", error: ex };
   }
 }
+
 export async function updatePassword(password) {
   try {
     const url = createUrl("user/update-password");

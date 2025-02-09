@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.flatmatrix.dto.LoginDto;
@@ -27,21 +28,22 @@ public class UserController {
 	private UserService userService;
 
 	@PostMapping("/register")
-	public ResponseEntity<?> newUser(@RequestBody @Valid UserDto userDto) {
+	public ResponseEntity<?> register(@RequestBody UserDto userDto) {
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(userService.newUser(userDto));
+			ResponseEntity<?> response = ResponseEntity.status(HttpStatus.OK).body(userService.newUser(userDto));
+			return response;
 		} catch (RuntimeException e) {
+			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
 		}
 	}
-	
+
 	@PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDto request) {
+	public ResponseEntity<?> login(@RequestBody LoginDto request) {
 		try {
-			System.out.println("Welcome to login");
 			return ResponseEntity.status(HttpStatus.OK).body(userService.authenticateUser(request));
 		} catch (RuntimeException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
-    }
+	}
 }
