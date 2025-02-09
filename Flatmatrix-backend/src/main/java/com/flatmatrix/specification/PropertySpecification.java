@@ -22,6 +22,10 @@ public class PropertySpecification {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
+            CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            Long currentUserId = userDetails.getUserId();
+            
+            predicates.add(criteriaBuilder.notEqual(root.get("user").get("id"), currentUserId));
             predicates.add(criteriaBuilder.equal(root.get("forRent"), forRent));
 
             if (city != null && !city.isEmpty()) {

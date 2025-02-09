@@ -13,11 +13,11 @@ import com.flatmatrix.security.CustomUserDetails;
 public interface PropertyService {
 	public ApiResponse addProperty(PropertyReqDto propertyDto, CustomUserDetails currentUser);
 
-	public List<PropertyReqDto> getFilteredProperties(GetPropertyDto dto);
+	public List<PropertyResponseDto> getFilteredProperties(GetPropertyDto dto);
 
 	List<PropertyResponseDto> getPropertiesByUserIdAndStatus(Long userId, String status);
 
-	public ApiResponse updateProperty(Long propertyId, PropertyReqDto propertyDto, CustomUserDetails currentUser);
+	public ApiResponse updateProperty(Long propertyId, PropertyResponseDto propertyDto, CustomUserDetails currentUser);
 
 	public ApiResponse deleteProperty(Long propertyId, CustomUserDetails currentUser);
 
