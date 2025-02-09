@@ -1,0 +1,27 @@
+body {
+  background-color: #171a2d;
+}
+.form-container-wrapper {
+  min-height: 100%;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+}
+.form-container {
+  padding: 45px;
+  height: 350px;
+  max-width: 80%;
+}
+.form-container label {
+  width: 100%;
+  text-align: left;
+  font-size: 18px;
+  color: #fff;
+}
+.form-container input {
+  width: 100%;
+}
+
+.row {
+  justify-content: space-around;
+}

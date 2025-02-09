@@ -1,3 +1,4 @@
+// NavbarLogout.jsx
 import { Link, useNavigate } from 'react-router-dom';
 
 function NavbarLogout() {
@@ -94,7 +95,7 @@ function NavbarLogout() {
               </li>
             ) : (
               <li className="nav-item">
-                <Link className="nav-link" to="/wishlist">
+                <Link className="nav-link" to="/login">
                   Login
                 </Link>
               </li>

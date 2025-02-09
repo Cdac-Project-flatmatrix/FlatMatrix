@@ -3,9 +3,15 @@ import "../styles/PropertyDetails.css";
 import Image1 from '../screens/image.jpg'
 import Image2 from '../screens/image2.jpeg'
 import Image3 from '../screens/image3.jpeg'
+import ContactOwnerForm from "./ContactOwnerForm";
+import { useWishlist } from './WishlistContext';
 
 const PropertyDetails = () => {
+  const { addToWishlist } = useWishlist();
+  const [buttonText, setButtonText] = useState("Add to Wishlist");
+
   const propertyData = {
+    id: 1, // Add an id field
     address: {
       street: "123 Main St",
       city: "Pune",
@@ -24,6 +30,7 @@ const PropertyDetails = () => {
     photos: [Image1, Image2, Image3],
   };
 
+  const [showDetails, setShowDetails] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const nextImage = () => {
@@ -40,6 +47,11 @@ const PropertyDetails = () => {
     } else {
       setCurrentImageIndex(propertyData.photos.length - 1);
     }
+  };
+
+  const handleAddToWishlist = () => {
+    addToWishlist(propertyData);
+    setButtonText("Property Added");
   };
 
   return (
@@ -124,12 +136,16 @@ const PropertyDetails = () => {
             <div className="card property-details-button-wrapper">
               <div className="row">
                 <div className="col d-flex gap-3">
-                  <button className="btn btn-outline-dark h-100 py-2 silent-btn">
-                    Add to Wishlist
+                  <button className="btn btn-outline-dark h-100 py-2 silent-btn" onClick={handleAddToWishlist}>
+                    {buttonText}
                   </button>
-                  <button className="btn btn-outline-dark h-100 py-2 silent-btn">
+                  <button onClick = {() => {
+                    setShowDetails(true)
+                    console.log("Clicked!")
+                  }} className="btn btn-outline-dark h-100 py-2 silent-btn">
                     Contact Owner
                   </button>
+                  <ContactOwnerForm showDetails={showDetails} setShowDetails={setShowDetails} />
                 </div>
               </div>
             </div>

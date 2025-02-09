@@ -1,0 +1,22 @@
+.property-heading {
+  color: #fff;
+  font-size: 3rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.property-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 25px;
+}
+.property-buttons button {
+  /* background-color: #479eac; */
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  padding-block: 4px;
+  font-weight: 700;
+  width: 100px;
+}
