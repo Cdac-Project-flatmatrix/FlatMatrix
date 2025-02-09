@@ -44,8 +44,10 @@ public class PropertyController {
 	@PostMapping
 	public ResponseEntity<?> addProperty(@RequestBody @Valid PropertyReqDto propertyDto) {
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(propertyService.addProperty(propertyDto));
+			CustomUserDetails currentUser = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			return ResponseEntity.status(HttpStatus.OK).body(propertyService.addProperty(propertyDto, currentUser));
 		} catch (RuntimeException e) {
+			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage()));
 		}
 	}

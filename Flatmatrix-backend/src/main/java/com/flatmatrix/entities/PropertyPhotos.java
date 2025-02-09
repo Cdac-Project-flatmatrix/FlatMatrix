@@ -9,7 +9,7 @@ import lombok.Data;
 public class PropertyPhotos extends BaseEntity{
 	@ManyToOne
 	private Property property;
-	private String url;
+	private String imageUrl;
 	
 	
 }
