@@ -11,7 +11,7 @@ import com.flatmatrix.entities.Property;
 import com.flatmatrix.security.CustomUserDetails;
 
 public interface PropertyService {
-	public ApiResponse addProperty(PropertyReqDto propertyDto);
+	public ApiResponse addProperty(PropertyReqDto propertyDto, CustomUserDetails currentUser);
 
 	public List<PropertyReqDto> getFilteredProperties(GetPropertyDto dto);
 

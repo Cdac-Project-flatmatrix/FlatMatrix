@@ -51,14 +51,15 @@ public class PropertyServiceImpl implements PropertyService {
     private PropertyPhotosRepository propertyPhotosRepository;
 
     @Override
-    public ApiResponse addProperty(PropertyReqDto propertyDto) {
-    	logger.info("Adding property for user ID: {}", propertyDto.getUserid());
+    public ApiResponse addProperty(PropertyReqDto propertyDto, CustomUserDetails currentUser) {
+    	logger.info("Adding property for user ID: {}", currentUser.getUserId());
 
-        User user = userDao.findById(propertyDto.getUserid())
+        User user = userDao.findById(currentUser.getUserId())
                 .orElseThrow(() -> {
                     logger.error("User not found with ID: {}", propertyDto.getUserid());
                     return new ResourceNotFoundException("User not found");
                 });
+        System.out.println(user);
 
         if (user.getRole().equals(UserRole.BUYER)) {
             logger.info("User ID: {} is a BUYER. Updating status to SELLER.", user.getId());
@@ -153,14 +154,12 @@ public class PropertyServiceImpl implements PropertyService {
         Property property = propertyRepository.findById(propertyId)
                 .orElseThrow(() -> new ResourceNotFoundException("Property not found with ID: " + propertyId));
 
-        // Check if the logged-in user is the owner
         if (!property.getUser().getId().equals(currentUser.getUserId())) {
             throw new SecurityException("You are not authorized to upload photos for this property.");
         }
 
-        // Create and save Property Photo
         PropertyPhotos photo = new PropertyPhotos();
-        photo.setUrl(photoDto.getUrl());
+        photo.setImageUrl(photoDto.getImageUrl());
         photo.setProperty(property);
 
         propertyPhotosRepository.save(photo);
