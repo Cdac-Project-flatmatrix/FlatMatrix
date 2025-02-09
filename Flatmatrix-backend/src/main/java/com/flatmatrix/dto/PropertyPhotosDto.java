@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class PropertyPhotosDto {
-	private String url;
+	private String imageUrl;
 
 }
