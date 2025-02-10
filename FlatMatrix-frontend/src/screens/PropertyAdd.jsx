@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import "../styles/PropertyUpdate.css"; 
 import { Link } from "react-router-dom";
+import { addProperty } from "../services/propertyadd";
 
 const PropertyAdd = () => {
   const [property, setProperty] = useState({
@@ -11,7 +12,7 @@ const PropertyAdd = () => {
       state: "",
       country: "",
       pinCode: "",
-    },
+    }, 
     price: "",
     size: "",
     bedRooms: "",

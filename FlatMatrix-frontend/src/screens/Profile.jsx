@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../styles/Profile.css";
-
+import { getUserProfile } from "../services/profile";
 function Profile() {
   const user = {
     name: "John Doe",
