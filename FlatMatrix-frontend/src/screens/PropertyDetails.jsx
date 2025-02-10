@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import "../styles/PropertyDetails.css";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { addTowishlist } from "../services/property";
+import EnquiryForm from "./EnquiryForm";
 
 const PropertyDetails = () => {
   // const propertyData = {
@@ -24,6 +25,7 @@ const PropertyDetails = () => {
   // };
   const location = useLocation();
   const propertyData = location.state || {};
+  const [showEnquiryForm, setShowEnquiryForm] = useState(false);
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -152,9 +154,20 @@ const PropertyDetails = () => {
                       Add to Wishlist
                     </button>
                   )}
-                  <Link className="btn btn-outline-dark h-100 py-2 silent-btn" to="/contact-owner"> 
+                  <button
+                    className="btn btn-outline-dark h-100 py-2 silent-btn"
+                    onClick={() => setShowEnquiryForm(true)}
+                  >
                     Contact Owner
-                  </Link>
+                  </button>
+
+                  {/* Show Enquiry Form Modal */}
+                  {showEnquiryForm && (
+                    <EnquiryForm
+                      propertyId={propertyData.id}
+                      onClose={() => setShowEnquiryForm(false)}
+                    />
+                  )}
                 </div>
               </div>
             </div>

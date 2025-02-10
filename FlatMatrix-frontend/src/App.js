@@ -27,6 +27,9 @@ import MyPropertyList from './screens/MyPropertiesList';
 import MyPropertyDetails from './screens/MyPropertyDetails';
 import AboutUs from './screens/aboutUs';
 import ContactOwnerForm from './screens/ContactOwnerForm';
+import SellerEnquiries from './screens/SellerEnquiries';
+import BuyerEnquiries from './screens/BuyerEnquiries';
+import EnquiryForm from './screens/EnquiryForm';
 
 
 
@@ -60,6 +63,9 @@ function App() {
           <Route path="/property-update" element={<PropertyUpdate />} />
           <Route path="/my-properties" element={<MyProperties />} />
           <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/seller-enquiries" element={<SellerEnquiries />} />
+          <Route path="/buyer-enquiries" element={<BuyerEnquiries />} />
+          <Route path="/submit-enquiry/:propertyId" element={<EnquiryForm />} />
           <Route
             path="/my-properties-details"
             element={<MyPropertyDetails />}
