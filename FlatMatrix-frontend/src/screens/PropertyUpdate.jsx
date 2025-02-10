@@ -23,7 +23,6 @@ const PropertyUpdate = () => {
   //   photo: null,
   // });
 
-
   const location = useLocation();
   const [property, setProperty] = useState(location.state || {});
 
@@ -48,17 +47,16 @@ const PropertyUpdate = () => {
   };
 
   const navigate = useNavigate();
-  const onUpdate = async()=>{
-      const response = await updateMyProperty(property);
-      console.log(response.data);
-      if(response.status === 200){
-        alert("Property updated successfully");
-        navigate("/my-properties");
-      }
-      else{
-        alert(response.data);
-      }
-  }
+  const onUpdate = async () => {
+    const response = await updateMyProperty(property);
+    console.log(response.data);
+    if (response.status === 200) {
+      alert("Property updated successfully");
+      navigate("/my-properties");
+    } else {
+      alert(response.data);
+    }
+  };
 
   return (
     <div className="update-container-wrapper">
@@ -197,7 +195,8 @@ const PropertyUpdate = () => {
               alignItems: "center",
               justifyContent: "center",
               width: "100%",
-            }} onClick={onUpdate}
+            }}
+            onClick={onUpdate}
           >
             Update Property
           </button>

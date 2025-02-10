@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.flatmatrix.dto.LoginDto;
 import com.flatmatrix.dto.UserDto;
+import com.flatmatrix.dto.UserUpdateDto;
 import com.flatmatrix.service.UserService;
 
 import jakarta.validation.Valid;
@@ -47,4 +49,13 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
 	}
+	@PutMapping("/update")
+	public ResponseEntity<?> updateProfile(@RequestBody UserUpdateDto updateDto ) {
+		return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(updateDto));
+	}
+	@GetMapping
+	public ResponseEntity<?> getUser(){
+		return ResponseEntity.status(HttpStatus.OK).body(userService.getUser());
+	}
+	
 }

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../styles/PropertyDetails.css";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { addTowishlist } from "../services/property";
 
 const PropertyDetails = () => {
@@ -152,9 +152,9 @@ const PropertyDetails = () => {
                       Add to Wishlist
                     </button>
                   )}
-                  <button className="btn btn-outline-dark h-100 py-2 silent-btn">
+                  <Link className="btn btn-outline-dark h-100 py-2 silent-btn" to="/contact-owner"> 
                     Contact Owner
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>

@@ -25,6 +25,8 @@ import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer } from 'react-toastify';
 import MyPropertyList from './screens/MyPropertiesList';
 import MyPropertyDetails from './screens/MyPropertyDetails';
+import AboutUs from './screens/aboutUs';
+import ContactOwnerForm from './screens/ContactOwnerForm';
 
 
 
@@ -57,8 +59,14 @@ function App() {
           <Route path="/property-add" element={<PropertyAdd />} />
           <Route path="/property-update" element={<PropertyUpdate />} />
           <Route path="/my-properties" element={<MyProperties />} />
-          <Route path="/my-properties-details" element={<MyPropertyDetails />} />
+          <Route path="/about-us" element={<AboutUs />} />
+          <Route
+            path="/my-properties-details"
+            element={<MyPropertyDetails />}
+          />
+          <Route path="/contact-owner" element={<ContactOwnerForm />} />
         </Routes>
+
         <ToastContainer />
       </div>
     </div>

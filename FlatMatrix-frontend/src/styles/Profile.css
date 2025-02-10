@@ -1,44 +1,78 @@
 .profile-container {
     padding: 20px;
-    max-width: 800px;
+    max-width: 100%;
     margin: auto;
-    background-color: #f9f9f9;
+    background-color: #222; /* Changed to dark background for contrast */
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  h1 {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: white ; /* Ensuring all text is white */
+}
+
+h1 {
     text-align: center;
     margin-bottom: 20px;
-  }
-  
-  .profile-form {
+}
+
+.profile-form {
     display: flex;
     flex-direction: column;
-  }
-  
-  .form-group {
+}
+
+.form-group {
     margin-bottom: 15px;
-  }
-  
-  .form-group label {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
     font-weight: bold;
     margin-bottom: 5px;
-  }
-  
-  .form-group input {
+    color: white; /* Ensures labels are visible */
+}
+
+.form-group input {
     padding: 10px;
     font-size: 16px;
-    border: 1px solid #ccc;
+    border: 1px solid white; /* White border for better visibility */
     border-radius: 5px;
-    background-color: #fff;
-  }
-  
-  .form-group input:disabled {
-    background-color: #f0f0f0;
-  }
-  
-  input[type="password"] {
+    background-color: transparent; /* Transparent background */
+    color: white; /* White text */
+}
+
+.form-group input:disabled {
+    background-color: rgba(255, 255, 255, 0.2); /* Light grey for disabled inputs */
+    color: rgba(255, 255, 255, 0.5); /* Faded white text */
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+input[type="password"] {
     letter-spacing: 1px;
-  }
-  
+}
+
+.form-control {
+    color: white !important;
+    background-color: transparent !important; 
+    border: 1px solid white !important;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.7) !important; 
+}
+
+/* Button Styling */
+.btn.action-btn {
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn.action-btn:hover {
+    background-color: #0056b3;
+}
