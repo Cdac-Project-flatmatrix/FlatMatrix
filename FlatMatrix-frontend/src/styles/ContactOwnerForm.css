@@ -1,0 +1,19 @@
+.modal-content {
+  background-color: transparent !important;
+  border: none !important;
+}
+.close-btn-custom {
+  background: url("../../public/close-icon.png");
+  display: inline-block;
+  height: 24px;
+  width: 24px;
+  background-size: cover; /* Ensure the image covers the entire span */
+  background-position: center; /* Center the image inside the span */
+  background-repeat: no-repeat;
+}
+.modal-backdrop.fade.show {
+  opacity: 0.8;
+}
+.contact-owner-card {
+  margin-top: 100px;
+}

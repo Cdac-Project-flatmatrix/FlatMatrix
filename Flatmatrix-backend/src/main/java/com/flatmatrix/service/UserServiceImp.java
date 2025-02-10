@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,8 @@ import com.flatmatrix.dto.ApiResponse;
 import com.flatmatrix.dto.JwtResponse;
 import com.flatmatrix.dto.LoginDto;
 import com.flatmatrix.dto.UserDto;
+import com.flatmatrix.dto.UserUpdateDto;
+import com.flatmatrix.entities.Address;
 import com.flatmatrix.entities.User;
 import com.flatmatrix.entities.UserRole;
 import com.flatmatrix.repositories.AddressRepository;
@@ -49,6 +52,7 @@ public class UserServiceImp implements UserService {
 
 	@Override
 	public ApiResponse newUser(UserDto userDto) {
+		System.out.println(userDto);
 		User user = modelMapper.map(userDto, User.class);
 		User f_user = userDao.findByEmail(user.getEmail()).orElseGet(() -> null);
 		if (f_user != null) {
@@ -81,7 +85,7 @@ public class UserServiceImp implements UserService {
 		System.out.println("token");
 		return JwtResponse.builder().token(token).build();
 	}
-		
+
 	public void authenticateWithUsernamePassword(String username, String password) {
 
 		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,
@@ -91,5 +95,30 @@ public class UserServiceImp implements UserService {
 		} catch (BadCredentialsException e) {
 			throw new BadCredentialsException("Invalid Username or Password!");
 		}
+	}
+
+	@Override
+	public ApiResponse updateUser(UserUpdateDto dto) {
+		CustomUserDetails currentUser = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication()
+				.getPrincipal();
+		User user = userDao.findById(currentUser.getUserId())
+				.orElseThrow(() -> new ResourceNotFoundException("user not found"));
+		user.setFirstName(dto.getFirstName());
+		user.setLastName(dto.getLastName());
+		user.setPhoneNumber(dto.getPhoneNumber());
+		user.setAddress(modelMapper.map(dto.getAddress(), Address.class));
+		user.setProfilePhoto(dto.getProfilePhoto());
+		userDao.save(user);
+		return new ApiResponse("User updated");
+	}
+
+	@Override
+	public UserDto getUser() {
+		CustomUserDetails currentUser = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication()
+				.getPrincipal();
+		User user = userDao.findById(currentUser.getUserId())
+				.orElseThrow(() -> new ResourceNotFoundException("user not found"));
+		
+		return modelMapper.map(user, UserDto.class);
 	}
 }

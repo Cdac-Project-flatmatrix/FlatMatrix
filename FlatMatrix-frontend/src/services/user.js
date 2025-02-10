@@ -52,34 +52,33 @@ export async function updatePassword(password) {
 
 export async function getMyProfile() {
   try {
-    const url = createUrl("user/profile");
+    const url = createUrl("auth");
     const token = sessionStorage["token"];
     const response = await axios.get(url, {
       headers: {
-        token,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
-    return response.data;
+    // console.log(response);
+    return response;
   } catch (ex) {
     return { status: "error", error: ex };
   }
 }
 
-export async function updateMyProfile(firstName, lastName, phone) {
+export async function updateMyProfile(userProfile) {
   try {
-    const url = createUrl("user/profile");
+    const url = createUrl("auth/update");
     const token = sessionStorage["token"];
-    const body = {
-      firstName,
-      lastName,
-      phone,
-    };
-    const response = await axios.put(url, body, {
+
+    const response = await axios.put(url, userProfile, {
       headers: {
-        token,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
-    return response.data;
+    return response;
   } catch (ex) {
     return { status: "error", error: ex };
   }

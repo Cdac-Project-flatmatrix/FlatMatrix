@@ -125,6 +125,7 @@ function Register() {
       status: true,
     };
 
+    console.log(userData);
     try {
       const result = await register(userData);
       if (result.status === 200) {

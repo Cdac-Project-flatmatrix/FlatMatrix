@@ -1,107 +1,207 @@
 import React, { useEffect, useState } from "react";
 import "../styles/Profile.css";
+import { getMyProfile, updateMyProfile } from "../services/user";
+import { useNavigate } from "react-router-dom";
 
 function Profile() {
-  const user = {
-    name: "John Doe",
-    email: "john@example.com",
-    phone: "123-456-7890",
-    address: "123 Main St, Pune",
-    username: "johndoe123",
-    password: "********",
+  const [user, setUser] = useState({
+    firstName: "",
+    lastName: "",
+    password: "",
+    phoneNumber: "",
+    profilePhoto: "",
+    address: {
+      street: "",
+      city: "",
+      state: "",
+      zip: "",
+      country: "", // Added country field
+    },
+    userName: "",
+    email: "",
+  });
+
+  const navigate = useNavigate();
+
+  const getUser = async () => {
+    const response = await getMyProfile();
+    if (!response || !response.data) {
+      alert("Error fetching user data");
+      return;
+    }
+
+    const data = response.data;
+    setUser({
+      firstName: data.firstName || "",
+      lastName: data.lastName || "",
+      password: "",
+      phoneNumber: data.phoneNumber || "",
+      profilePhoto: data.profilePhoto || "",
+      address: {
+        street: data.address?.street || "",
+        city: data.address?.city || "",
+        state: data.address?.state || "",
+        zip: data.address?.pinCode || "",
+        country: data.address?.country || "", // Map backend country field
+      },
+      userName: data.userName || "",
+      email: data.email || "",
+    });
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  const onUpdate = async () => {
+    const response = await updateMyProfile(user);
+    if (response.status === 200) {
+      alert("Profile updated ✅");
+      navigate("/");
+    } else {
+      alert("Failed to update profile");
+    }
   };
 
   return (
-    <div className="wishlist-container-wrapper ">
+    <div className="wishlist-container-wrapper">
       <div className="row justify-content-center">
         <div className="col d-flex justify-content-center mb-5 pb-5">
-          <div className="card custom-box-shadow p-4">
-            <div className="">
-              <h2 className="text-center mb-4 text-white fs-3">
-                Profile Information
-              </h2>
-              <form className="register-form text-white">
-                <div className="">
-                  <div className="">
-                    <label className="m-2 text-white" htmlFor="username">
-                      Username
-                    </label>
-                    <input
-                      className="form-control mb-2"
-                      type="text"
-                      id="username"
-                      value={user.username}
-                      placeholder="User Name"
-                    />
-                  </div>
+          <div className="card custom-box-shadow p-4 text-white text-center">
+            <h2 className="mb-4 fs-3 text-white">
+              Profile Information
+            </h2>
 
-                  <div className="">
-                    <label className="m-2 text-white" htmlFor="name">
-                      Full Name
-                    </label>
-                    <input
-                      className="form-control mb-2 w-100 "
-                      type="text"
-                      id="name"
-                      value={user.name}
-                      placeholder="Full Name"
-                    />
-                  </div>
+            {user.profilePhoto && (
+              <div className="mb-3">
+                <img
+                  src={user.profilePhoto}
+                  alt="Profile"
+                  className="rounded-circle"
+                  style={{
+                    width: "100px",
+                    height: "100px",
+                    objectFit: "cover",
+                  }}
+                />
+              </div>
+            )}
 
-                  <div className="">
-                    <label className="m-2 text-white w-100 " htmlFor="email">
-                      Email Address
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      value={user.email}
-                      placeholder="Email Address m-2"
-                    />
-                  </div>
+            <form className="register-form text-white">
+              <label className="m-2 text-white">Username</label>
+              <input
+                className="form-control mb-2"
+                type="text"
+                value={user.userName}
+                disabled
+              />
 
-                  <div className="">
-                    <label className="m-2 text-white" htmlFor="phone">
-                      Phone Number
-                    </label>
-                    <input
-                      type="text"
-                      id="phone"
-                      value={user.phone}
-                      placeholder="Phone Number"
-                    />
-                  </div>
+              <label className="m-2 text-white">Email Address</label>
+              <input
+                className="form-control mb-2"
+                type="email"
+                value={user.email}
+                disabled
+              />
 
-                  <div className="">
-                    <label className="m-2 text-white" htmlFor="address">
-                      Address
-                    </label>
-                    <input
-                      type="text"
-                      id="address"
-                      value={user.address}
-                      placeholder="Address"
-                    />
-                  </div>
-                  <div className="">
-                    <label className="m-2 text-white" htmlFor="password">
-                      Password
-                    </label>
-                    <input
-                      type="password"
-                      id="password"
-                      value={user.password}
-                      placeholder="Password"
-                      className="w-100 "
-                      style={{ width: "100%" }}
-                    />
-                  </div>
-                </div>
-                <button type="button" className="btn action-btn w-100 mt-3">
-                  Update
-                </button>
-              </form>
-            </div>
+              <label className="m-2 text-white">First Name</label>
+              <input
+                className="form-control mb-2 text-white"
+                type="text"
+                value={user.firstName}
+                onChange={(e) =>
+                  setUser({ ...user, firstName: e.target.value })
+                }
+              />
+
+              <label className="m-2 text-white">Last Name</label>
+              <input
+                className="form-control mb-2 text-white"
+                type="text"
+                value={user.lastName}
+                onChange={(e) => setUser({ ...user, lastName: e.target.value })}
+              />
+
+              <label className="text-white m-2">Phone Number</label>
+              <input
+                className="form-control mb-2 text-white"
+                type="text"
+                value={user.phoneNumber}
+                onChange={(e) =>
+                  setUser({ ...user, phoneNumber: e.target.value })
+                }
+              />
+
+              {/* <label className="m-2 text-white">Address</label> */}
+              <label className="m-1 text-white">Street</label>
+              <input
+                className="form-control mb-2 text-white"
+                type="text"
+                value={user.address.street}
+                onChange={(e) =>
+                  setUser({
+                    ...user,
+                    address: { ...user.address, street: e.target.value },
+                  })
+                }
+              />
+              <label className="m-1 text-white">City</label>
+              <input
+                className="form-control mb-2 text-white"
+                type="text"
+                value={user.address.city}
+                onChange={(e) =>
+                  setUser({
+                    ...user,
+                    address: { ...user.address, city: e.target.value },
+                  })
+                }
+              />
+              <label className="m-1 text-white">State</label>
+              <input
+                className="form-control mb-2 text-white"
+                type="text"
+                value={user.address.state}
+                onChange={(e) =>
+                  setUser({
+                    ...user,
+                    address: { ...user.address, state: e.target.value },
+                  })
+                }
+              />
+              <label className="m-1 text-white">ZIP Code</label>
+              <input
+                className="form-control mb-2 text-white"
+                type="text"
+                value={user.address.zip}
+                onChange={(e) =>
+                  setUser({
+                    ...user,
+                    address: { ...user.address, zip: e.target.value },
+                  })
+                }
+              />
+              <label className="m-1 text-white">Country</label>
+              <input
+                className="form-control mb-2 text-white"
+                type="text"
+                value={user.address.country}
+                onChange={(e) =>
+                  setUser({
+                    ...user,
+                    address: { ...user.address, country: e.target.value },
+                  })
+                }
+              />
+
+              <button
+                type="button"
+                onClick={onUpdate}
+                className="btn action-btn w-100 mt-3"
+              >
+                Update
+              </button>
+            </form>
           </div>
         </div>
       </div>
