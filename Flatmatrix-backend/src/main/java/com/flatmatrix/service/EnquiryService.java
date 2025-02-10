@@ -1,16 +1,17 @@
 package com.flatmatrix.service;
 
-import java.util.List;
-
 import com.flatmatrix.dto.EnquiryDto;
+import com.flatmatrix.dto.EnquiryResponseDto;
 import com.flatmatrix.security.CustomUserDetails;
+import java.util.List;
 
 public interface EnquiryService {
 
-	void submitEnquiry(EnquiryDto enquiryDto, CustomUserDetails currentUser);
+    void submitEnquiry(EnquiryDto enquiryDto, CustomUserDetails currentUser);
 
-	List<EnquiryDto> getSellerEnquiries(CustomUserDetails currentUser);
+    List<EnquiryResponseDto> getSellerEnquiries(CustomUserDetails currentUser, boolean showSolved);
 
-	void markEnquiryAsSolved(Long enquiryId, CustomUserDetails currentUser);
+    void replyAndMarkEnquiryAsSolved(Long enquiryId, String reply, CustomUserDetails currentUser);
 
+    List<EnquiryResponseDto> getBuyerEnquiries(CustomUserDetails currentUser, boolean showSolved);
 }

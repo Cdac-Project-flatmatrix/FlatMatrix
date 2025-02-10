@@ -41,7 +41,7 @@ const ContactOwnerForm = () => {
                   <div className="row">
                     <div className="col">
                       <div className="mb-3">
-                        <label className="text-white " htmlFor="">
+                        <label className="text-white" htmlFor="">
                           Email*
                         </label>
                         <input
