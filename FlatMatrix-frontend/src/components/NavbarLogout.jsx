@@ -87,13 +87,13 @@ function NavbarLogout() {
             )}
 
             {isLoggedIn ? (
-              <li className="nav-item">
+              <li className="nav-item " style={{marginTop:'0px'}}>
                 <button className="nav-link" onClick={onLogout}>
                   Logout
                 </button>
               </li>
             ) : (
-              <li className="nav-item">
+              <li className="nav-item ">
                 <Link className="nav-link" to="/login">
                   Login
                 </Link>

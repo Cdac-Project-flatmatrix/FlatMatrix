@@ -6,6 +6,7 @@ import { submitEnquiry } from "../services/enquiry";
 const EnquiryForm = ({ propertyId, onClose }) => {
   const [show, setShow] = useState(true);
   const [message, setMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async () => {
     if (!message.trim()) {
@@ -13,20 +14,22 @@ const EnquiryForm = ({ propertyId, onClose }) => {
       return;
     }
 
+    setIsSubmitting(true); 
+
     try {
       const response = await submitEnquiry({ propertyId, message });
-      console.log(response.data);
-      if(response.status === 200){
+      if (response.status === 200) {
         alert("Enquiry submitted successfully!");
         setShow(false);
         onClose && onClose();
-      }
-      else{
-        alert("Enquiry not submitted!!")
+      } else {
+        alert("Enquiry not submitted!");
       }
     } catch (error) {
       alert("Failed to submit enquiry. Try again later.");
     }
+
+    setIsSubmitting(false); 
   };
 
   return (
@@ -44,25 +47,23 @@ const EnquiryForm = ({ propertyId, onClose }) => {
                 ></span>
               </div>
               <div className="modal-body">
-                <div>
-                  <h2 className="heading text-white">Your Message</h2>
-                  <div className="mb-3">
-                    <label className="text-white">
-                      Enter your query here...
-                    </label>
-                    <textarea
-                      onChange={(e) => setMessage(e.target.value)}
-                      className="form-control"
-                    />
-                  </div>
+                <h2 className="heading text-white">Your Message</h2>
+                <div className="mb-3">
+                  <label className="text-white">Enter your query here...</label>
+                  <textarea
+                    onChange={(e) => setMessage(e.target.value)}
+                    className="form-control"
+                    disabled={isSubmitting} 
+                  />
                 </div>
               </div>
               <div className="modal-footer">
                 <button
                   className="btn btn-secondary search-btn"
                   onClick={handleSubmit}
+                  disabled={isSubmitting} 
                 >
-                  Submit Enquiry
+                  {isSubmitting ? "Submitting..." : "Submit Enquiry"}
                 </button>
               </div>
             </div>

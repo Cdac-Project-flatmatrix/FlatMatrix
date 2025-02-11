@@ -1,6 +1,6 @@
 import React from "react";
-
 import { useNavigate } from "react-router-dom";
+// import "./Homepage.css"; // Ensure you have this CSS file
 
 function Homepage() {
   const navigate = useNavigate();
@@ -10,13 +10,16 @@ function Homepage() {
         <div className="image-container">
           <img src="/image2.jpg" alt="Modern Flat" />
         </div>
+        {/* <div className="hero-section">
+          <img src="/pngwing.com.png" alt="Modern Flat" />
+        </div> */}
         <div className="text-container">
           <h1 className="title text-start">
             Discover Your <br /> Dream Flat
           </h1>
           <p className="mb-4 mt-3 w-75">
-            Explore the best flats for sale or rent in Pune's Hinjewadi area
-            with FlatMatrix. Your ideal home is just a search away.
+            Explore the best flats for sale or rent in major metro cities with
+            FlatMatrix. Your ideal home is just a search away!
           </p>
           <div className="button-group">
             <button

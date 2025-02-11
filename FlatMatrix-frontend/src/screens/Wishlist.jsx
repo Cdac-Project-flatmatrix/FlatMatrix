@@ -23,7 +23,7 @@ function Wishlist() {
 
   const propertiesDetail = (property) => {
     console.log(property);
-    navigation("/propertyDetails", { state: property });
+    navigation("/wishlist-details", { state: property });
   };
   useEffect(() => {
     onLoad();

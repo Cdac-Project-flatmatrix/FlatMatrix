@@ -121,4 +121,18 @@ public class UserServiceImp implements UserService {
 		
 		return modelMapper.map(user, UserDto.class);
 	}
+
+	@Override
+	public String resetPassword(String email, String oldPassword, String newPassword) {
+		
+		User user = userDao.findByEmail(email)
+		        .orElseThrow(() -> new RuntimeException("User not found"));
+
+		    if (!encoder.matches(oldPassword, user.getPassword())) {
+		        throw new RuntimeException("Old password is incorrect");
+		    }
+		    user.setPassword(encoder.encode(newPassword));
+		    userDao.save(user);
+		    return "Password reset successfully";
+	}
 }

@@ -30,6 +30,7 @@ import ContactOwnerForm from './screens/ContactOwnerForm';
 import SellerEnquiries from './screens/SellerEnquiries';
 import BuyerEnquiries from './screens/BuyerEnquiries';
 import EnquiryForm from './screens/EnquiryForm';
+import WishlistPropertyDetails from './screens/WishlistPropertyDetails';
 
 
 
@@ -66,6 +67,7 @@ function App() {
           <Route path="/seller-enquiries" element={<SellerEnquiries />} />
           <Route path="/buyer-enquiries" element={<BuyerEnquiries />} />
           <Route path="/submit-enquiry/:propertyId" element={<EnquiryForm />} />
+          <Route path="/wishlist-details" element={<WishlistPropertyDetails/>}/>
           <Route
             path="/my-properties-details"
             element={<MyPropertyDetails />}

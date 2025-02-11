@@ -14,4 +14,5 @@ public interface UserService {
 	JwtResponse authenticateUser(LoginDto request);
 	ApiResponse updateUser(UserUpdateDto updateDto);
 	UserDto getUser();
+	String resetPassword(String email, String oldPassword, String newPassword);
 }

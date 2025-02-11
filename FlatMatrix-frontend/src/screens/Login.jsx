@@ -21,13 +21,13 @@ function Login() {
           const data = result["data"];
           const token = data["token"];
           sessionStorage["token"] = token;
-          toast.success("welcome to the application");
+          alert("welcome to the application");
           navigate('/');
         } else {
-          toast.error(result["error"]);
+          alert('invalid username or password');
         }
       } catch (error) {
-        toast.error(error);
+        alert("invalid username or password");
       }
     }
   };
@@ -40,7 +40,7 @@ function Login() {
         <div className="row">
           <div className="col">
             <div className="mb-3">
-              <label htmlFor="">Email</label>
+              <label htmlFor="">Username</label>
               <input
                 onChange={(e) => setEmail(e.target.value)}
                 type="text"

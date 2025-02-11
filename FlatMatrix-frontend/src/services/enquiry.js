@@ -38,10 +38,12 @@ export const getSellerEnquiries = async (showSolved) => {
 export const solveEnquiry = async (enquiryId, reply) => {
   try {
     const token = sessionStorage.getItem("token");
-    const url = createUrl(`enquiries/${enquiryId}/solve?reply=${encodeURIComponent(reply)}`);
+    const url = createUrl(
+      `enquiries/${enquiryId}/solve?reply=${encodeURIComponent(reply)}`
+    );
     const response = await axios.put(
       url,
-      { },
+      {},
       {
         headers: {
           "Content-Type": "application/json",
@@ -56,13 +58,13 @@ export const solveEnquiry = async (enquiryId, reply) => {
 };
 
 // Get buyer's queries
-export const getBuyerEnquiries = async () => {
+export const getBuyerEnquiries = async (showSolved) => {
   try {
     const token = sessionStorage.getItem("token");
-    const url = createUrl("enquiries/buyer");
+    const url = createUrl(`enquiries/buyer?showSolved=${showSolved}`);
     const response = await axios.get(url, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: ` Bearer ${token}`,
       },
     });
     return response;

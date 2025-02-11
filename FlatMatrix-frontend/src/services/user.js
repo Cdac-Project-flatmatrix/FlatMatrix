@@ -34,17 +34,18 @@ export async function register(userDto) {
   }
 }
 
-export async function updatePassword(password) {
+export async function updatePassword(email, oldPassword, newPassword) {
   try {
-    const url = createUrl("user/update-password");
+    const url = createUrl(
+      `auth/reset-password?email=${email}&oldPassword=${oldPassword}&newPassword=${newPassword}`
+    );
     const body = {
-      password,
+      email,
+      oldPassword,
+      newPassword,
     };
-    const token = sessionStorage["token"];
-    const response = await axios.put(url, body, {
-      headers: { token },
-    });
-    return response.data;
+    const response = await axios.put(url, body);
+    return response;
   } catch (ex) {
     return { status: "error", error: ex };
   }

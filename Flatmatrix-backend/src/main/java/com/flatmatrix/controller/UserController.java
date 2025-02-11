@@ -2,6 +2,7 @@ package com.flatmatrix.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -56,6 +57,18 @@ public class UserController {
 	@GetMapping
 	public ResponseEntity<?> getUser(){
 		return ResponseEntity.status(HttpStatus.OK).body(userService.getUser());
+	}
+	
+	@PutMapping("/reset-password")
+	public ResponseEntity<?> resetPassword(@RequestParam String email, 
+	                                       @RequestParam String oldPassword, 
+	                                       @RequestParam String newPassword) {
+	    try {
+	        String result = userService.resetPassword(email, oldPassword, newPassword);
+	        return ResponseEntity.status(HttpStatus.OK).body(result);
+	    } catch (RuntimeException e) {
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+	    }
 	}
 	
 }

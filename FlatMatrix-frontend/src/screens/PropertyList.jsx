@@ -32,15 +32,19 @@ function PropertyList() {
   return (
     <div className="wishlist-container-wrapper">
       <div className="wishlist-container">
-
-      <center><Link
-              to="/buyer-enquiries"
-              className="btn btn-light buy-btn mb-5"
-              style={{ alignItems: "center", justifyContent: "center" , width:"50%"}}
-            >
-              Enquiries
-            </Link>
-            </center>
+        <center>
+          <Link
+            to="/buyer-enquiries"
+            className="btn btn-light buy-btn mb-5"
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              width: "50%",
+            }}
+          >
+            Enquiries
+          </Link>
+        </center>
 
         <h2 className="m-2">Properties</h2>
         <ul className="wishlist-list m-2">
@@ -66,16 +70,16 @@ function PropertyList() {
                         <div className="">
                           <button
                             onClick={() => propertiesDetail(property)}
-                            className="btn btn-info m-2 silent-btn"
+                            className="btn action-btn"
                           >
                             Get Details
                           </button>
                         </div>
-                        <div className="">
+                        {/* <div className="">
                           <button className="btn action-btn">
                             Add to wishlist
-                          </button>
-                        </div>
+                          </button> */}
+                        {/* </div> */}
                       </div>
                     </div>
                   </div>

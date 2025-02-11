@@ -39,7 +39,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 		String requestURI = request.getRequestURI();
 		logger.info("Request URI: {}", requestURI);
 		if (requestURI.startsWith("/swagger-ui") || requestURI.startsWith("/v3/api-docs")
-				|| requestURI.startsWith("/auth/register") || requestURI.startsWith("/auth/login")) {
+				|| requestURI.startsWith("/auth/register") || requestURI.startsWith("/auth/login")|| requestURI.startsWith("/auth/reset-password")) {
 			System.out.println("Going further from filter");
 			chain.doFilter(request, response);
 			return;
