@@ -14,10 +14,16 @@ const EnquiryForm = ({ propertyId, onClose }) => {
     }
 
     try {
-      await submitEnquiry({ propertyId, message });
-      alert("Enquiry submitted successfully!");
-      setShow(false);
-      onClose && onClose(); // Close modal if parent provides onClose function
+      const response = await submitEnquiry({ propertyId, message });
+      console.log(response.data);
+      if(response.status === 200){
+        alert("Enquiry submitted successfully!");
+        setShow(false);
+        onClose && onClose();
+      }
+      else{
+        alert("Enquiry not submitted!!")
+      }
     } catch (error) {
       alert("Failed to submit enquiry. Try again later.");
     }

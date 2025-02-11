@@ -56,7 +56,14 @@ public class EnquiryServiceImpl implements EnquiryService {
                 "Message: " + enquiryDto.getMessage() + "\n\n" +
                 "Please check your dashboard for more details.";
         
+        System.out.println("sensing mail");
+        System.out.println("Sending mail to: " + property.getUser().getEmail());
+        System.out.println("Subject: " + subject);
+        System.out.println("Body: " + body);
+//        mailService.sendEmailNotification(property.getUser().getEmail(), subject, body);
         mailService.sendEmailNotification(property.getUser().getEmail(), subject, body);
+        System.out.println("Mail Sent!");
+
     }
 
     @Override
@@ -68,10 +75,16 @@ public class EnquiryServiceImpl implements EnquiryService {
                 enquiryRepository.findByPropertyUserAndStatus(seller, EnquiryStatus.SOLVED) :
                 enquiryRepository.findByPropertyUserAndStatus(seller, EnquiryStatus.PENDING);
 
-        return enquiries.stream()
-                .map(enquiry -> mapper.map(enquiry, EnquiryResponseDto.class))
-                .collect(Collectors.toList());
+        return enquiries.stream().map(enquiry -> {
+            EnquiryResponseDto dto = mapper.map(enquiry, EnquiryResponseDto.class);
+            dto.setId(enquiry.getId()); 
+            dto.setPropertyId(enquiry.getProperty().getId()); 
+            dto.setBuyerName(enquiry.getBuyer().getFirstName() + " " +  enquiry.getBuyer().getLastName()); 
+            dto.setStatus(enquiry.getStatus().toString()); 
+            return dto;
+        }).collect(Collectors.toList());
     }
+
 
     @Override
     public void replyAndMarkEnquiryAsSolved(Long enquiryId, String reply, CustomUserDetails currentUser) {
@@ -86,7 +99,6 @@ public class EnquiryServiceImpl implements EnquiryService {
         enquiry.setStatus(EnquiryStatus.SOLVED);
         enquiryRepository.save(enquiry);
 
-        // Notify buyer via email
         String subject = "Your Enquiry Has Been Resolved";
         String body = "Dear " + enquiry.getBuyer().getFirstName() + ",\n\n" +
                 "Your enquiry regarding Property ID " + enquiry.getProperty().getId() + " has been resolved.\n\n" +
@@ -105,8 +117,14 @@ public class EnquiryServiceImpl implements EnquiryService {
                 enquiryRepository.findByBuyerAndStatus(buyer, EnquiryStatus.SOLVED) :
                 enquiryRepository.findByBuyerAndStatus(buyer, EnquiryStatus.PENDING);
 
-        return enquiries.stream()
-                .map(enquiry -> mapper.map(enquiry, EnquiryResponseDto.class))
-                .collect(Collectors.toList());
+        return enquiries.stream().map(enquiry -> {
+            EnquiryResponseDto dto = mapper.map(enquiry, EnquiryResponseDto.class);
+            dto.setId(enquiry.getId()); 
+            dto.setPropertyId(enquiry.getProperty().getId()); 
+            dto.setBuyerName(enquiry.getBuyer().getFirstName() + " " + enquiry.getBuyer().getLastName()); 
+            dto.setStatus(enquiry.getStatus().toString()); 
+            return dto;
+        }).collect(Collectors.toList());
     }
+
 }
