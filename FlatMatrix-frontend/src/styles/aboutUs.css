@@ -14,7 +14,6 @@
   color: white;
   padding: 64px;
   box-sizing: border-box;
-  /* gap: 100px; */
   width: 80%;
   max-width: 700px;
 }
@@ -48,11 +47,10 @@
   width: 12px;
   display: inline-block;
   background-image: url("../../public/telegram-icon.png");
-  background-size: cover; /* Ensure the image covers the entire span */
-  background-position: center; /* Center the image inside the span */
-  background-repeat: no-repeat; /* Prevent the image from repeating */
-  /* padding: 10px 20px; Add padding to give space around the text */
-  color: white; /* Optional: set text color to be visible against the image */
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat;
+  color: white; 
 }
 .about-right-side {
   display: flex;
@@ -83,10 +81,9 @@
 .about-right-side-Location-icon,
 .about-right-side-Phone-icon {
   display: inline-block;
-  background-size: cover; /* Ensure the image covers the entire span */
-  background-position: center; /* Center the image inside the span */
-  background-repeat: no-repeat; /* Prevent the image from repeating */
-  /* padding: 10px 20px; Add padding to give space around the text */
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat; 
   color: white;
   height: 16px;
   width: 16px;
@@ -95,6 +92,5 @@
 .about-right-side-container {
   display: flex;
   flex-direction: row;
-  /* align-items: center; */
   gap: 10px;
 }

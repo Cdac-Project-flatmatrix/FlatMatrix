@@ -3,8 +3,10 @@ import { createUrl } from "../utils";
 
 export const submitEnquiry = async (enquiry) => {
   try {
+    console.log(enquiry);
     const token = sessionStorage.getItem("token");
-    const url = createUrl(`enquiries/${enquiry.propertyId}`);
+    const url = createUrl(`enquiries`);
+    console.log(url);
     const response = await axios.post(url, enquiry, {
       headers: {
         "Content-Type": "application/json",
@@ -17,11 +19,10 @@ export const submitEnquiry = async (enquiry) => {
   }
 };
 
-// Get seller queries (default: unsolved)
-export const getSellerEnquiries = async (showSolved = false) => {
+export const getSellerEnquiries = async (showSolved) => {
   try {
     const token = sessionStorage.getItem("token");
-    const url = createUrl(`enquiries/seller?solved=${showSolved}`);
+    const url = createUrl(`enquiries/seller?showSolved=${showSolved}`);
     const response = await axios.get(url, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -37,10 +38,10 @@ export const getSellerEnquiries = async (showSolved = false) => {
 export const solveEnquiry = async (enquiryId, reply) => {
   try {
     const token = sessionStorage.getItem("token");
-    const url = createUrl(`enquiries/${enquiryId}/solve`);
+    const url = createUrl(`enquiries/${enquiryId}/solve?reply=${encodeURIComponent(reply)}`);
     const response = await axios.put(
       url,
-      { reply },
+      { },
       {
         headers: {
           "Content-Type": "application/json",

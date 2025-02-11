@@ -32,6 +32,16 @@ function PropertyList() {
   return (
     <div className="wishlist-container-wrapper">
       <div className="wishlist-container">
+
+      <center><Link
+              to="/buyer-enquiries"
+              className="btn btn-light buy-btn mb-5"
+              style={{ alignItems: "center", justifyContent: "center" , width:"50%"}}
+            >
+              Enquiries
+            </Link>
+            </center>
+
         <h2 className="m-2">Properties</h2>
         <ul className="wishlist-list m-2">
           {Array.isArray(properties) && properties.length > 0 ? (

@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class EnquiryResponseDto {
-    private Long enquiryId;
+    private Long id;
     private Long propertyId;
     private String buyerName;
     private String message;

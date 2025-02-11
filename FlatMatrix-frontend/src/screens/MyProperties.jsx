@@ -9,18 +9,26 @@ const MyProperties = () => {
     <div className="update-container-wrapper">
       <div>
         <div className="row">
-          <div className="col-5"></div>
+          <div className="col-3"></div>
           {/* <div className="col"></div> */}
-          <div className="col">
-            <Link
-              to="/property-add"
-              className="btn btn-light buy-btn mb-5"
-              style={{ alignItems: "center", justifyContent: "center" , width:"100%"}}
-            >
-              Add Property
-            </Link>
-          </div>
-          <div className="col-5"></div>
+          <div className="col d-flex gap-3 mb-4">
+  <Link
+    to="/property-add"
+    className="btn btn-light buy-btn"
+    style={{ flex: 1, textAlign: "center" }}
+  >
+    Add Property
+  </Link>
+  <Link
+    to="/seller-enquiries"
+    className="btn btn-light buy-btn"
+    style={{ flex: 1, textAlign: "center" }}
+  >
+    Enquiries
+  </Link>
+</div>
+
+          <div className="col-3"></div>
         </div>
         <MyPropertyList />
       </div>

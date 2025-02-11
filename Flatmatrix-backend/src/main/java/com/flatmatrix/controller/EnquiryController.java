@@ -21,9 +21,10 @@ public class EnquiryController {
     private EnquiryService enquiryService;
 
     @PostMapping
-    @PreAuthorize("hasRole('BUYER')")
+//    @PreAuthorize("hasRole('BUYER')")
     public ResponseEntity<String> submitEnquiry(@RequestBody EnquiryDto enquiryDto,
                                                 @AuthenticationPrincipal CustomUserDetails currentUser) {
+    	
         enquiryService.submitEnquiry(enquiryDto, currentUser);
         return ResponseEntity.ok("Enquiry submitted successfully");
     }
@@ -33,6 +34,7 @@ public class EnquiryController {
     public ResponseEntity<List<EnquiryResponseDto>> getSellerEnquiries(
             @AuthenticationPrincipal CustomUserDetails currentUser,
             @RequestParam(defaultValue = "false") boolean showSolved) {
+    	 System.out.println("Received showSolved: " + showSolved); 
         return ResponseEntity.ok(enquiryService.getSellerEnquiries(currentUser, showSolved));
     }
 

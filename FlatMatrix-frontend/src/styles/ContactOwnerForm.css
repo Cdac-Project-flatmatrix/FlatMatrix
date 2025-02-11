@@ -7,8 +7,8 @@
   display: inline-block;
   height: 24px;
   width: 24px;
-  background-size: cover; /* Ensure the image covers the entire span */
-  background-position: center; /* Center the image inside the span */
+  background-size: cover; 
+  background-position: center; 
   background-repeat: no-repeat;
 }
 .modal-backdrop.fade.show {

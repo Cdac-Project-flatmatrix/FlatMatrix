@@ -139,4 +139,67 @@ margin-bottom: 2rem !important;
     overflow-y: scroll;
   }
 
+  .wishlist-item-details2 p { 
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+    color: white;
+  }
+  
+  .wishlist-item-details2 strong { 
+    min-width: 100px; /* Adjust width as needed */
+    text-align: left; /* Ensures the label is left-aligned */
+    margin-right: 10px; /* Adds spacing between label and value */
+  }
+  
+  .wishlist-item-details2 span {
+    flex-grow: 1; /* Allows the value to take up remaining space */
+    text-align: left; /* Ensures value is left-aligned */
+  }
+
+  .wishlist-item-details2 textarea {
+    width: 50%; /* Set width to 50% of the container */
+    min-height: 80px; /* Set a minimum height for consistency */
+    resize: none; /* Prevent resizing */
+  }
+  
+  .wishlist-item-details2 button {
+    width: 50%; /* Set width to 50% of the container */
+    max-width: 200px; /* Optional: Limit max width */
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .wishlist-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center elements */
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    width: 100%; /* Ensure it takes the full width of the parent */
+  }
+  
+  .wishlist-item-details2 {
+    width: 100%; /* Ensure it spans the full width */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center align */
+  }
+  
+  .wishlist-item-details2 textarea {
+    width: 50%; /* Set width to 50% of the wishlist item */
+    min-height: 80px; /* Consistent height */
+    resize: none;
+  }
+  
+  .wishlist-item-details2 button {
+    width: 50%; /* Set width to 50% of the wishlist item */
+    max-width: 200px; /* Optional: Prevent extra large buttons */
+    padding: 10px;
+    text-align: center;
+    margin-top: 10px; /* Add some spacing */
+  }
+  
+  
   
