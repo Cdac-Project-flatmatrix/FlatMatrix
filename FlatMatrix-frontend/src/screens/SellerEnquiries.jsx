@@ -13,35 +13,28 @@ export function SellerEnquiries() {
 
   const fetchEnquiries = async () => {
     const response = await getSellerEnquiries(showSolved);
-    if(response.status == 200){
+    if (response.status === 200) {
       console.log(response.data);
       setEnquiries(response.data);
-    }
-    else{
+    } else {
       alert("Failed to load enquiries");
     }
-    
   };
 
   const handleSolve = async (enquiryId) => {
-    console.log(enquiryId);
-    if (!reply) {
+    if (!reply.trim()) {
       alert("Please enter a reply before marking as solved.");
       return;
     }
 
     const response = await solveEnquiry(enquiryId, reply);
-    // console.log(response.error.message);
-    if(response.status == 200){
+    if (response.status === 200) {
       alert("Enquiry solved!");
       setReply("");
       fetchEnquiries();
-    }
-    else{
+    } else {
       alert(response.error.message);
     }
-   
-    
   };
 
   return (
@@ -51,17 +44,17 @@ export function SellerEnquiries() {
 
         <div className="m-3">
           <label className="text-white">
-          <input
-  type="checkbox"
-  checked={showSolved}
-  onChange={() => {
-    setShowSolved(prev => {
-      const newShowSolved = !prev;
-      fetchEnquiries(newShowSolved); // Pass updated value immediately
-      return newShowSolved;
-    });
-  }}
-/>
+            <input
+              type="checkbox"
+              checked={showSolved}
+              onChange={() => {
+                setShowSolved((prev) => {
+                  const newShowSolved = !prev;
+                  fetchEnquiries(newShowSolved);
+                  return newShowSolved;
+                });
+              }}
+            />
             Show Solved Enquiries
           </label>
         </div>
@@ -71,14 +64,26 @@ export function SellerEnquiries() {
         ) : (
           <ul className="wishlist-list m-2">
             {enquiries.map((enquiry) => (
-              <li key={enquiry.id} className="wishlist-item">
+              <li key={enquiry.id} className="wishlist-item2">
                 <div className="wishlist-item-details2">
-                  <p><strong>Buyer:</strong> {enquiry.buyerName}</p>
-                  <p><strong>Message:</strong> {enquiry.message}</p>
-                  <p><strong>Reply:</strong> {enquiry.reply || "No reply yet"}</p>
-                  <p><strong>Status:</strong> {enquiry.status}</p>
+                  <p>
+                    <strong>Buyer:</strong> {enquiry.buyerName}
+                  </p>
+                  <p>
+                    <strong>Message:</strong> {enquiry.message}
+                  </p>
+                  <p>
+                    <strong>Reply:</strong> {enquiry.reply || "No reply yet"}
+                  </p>
+                  <p>
+                    <strong>Status:</strong>{" "}
+                    <span className={enquiry.status === "Solved" ? "text-success" : "text-warning"}>
+                      {enquiry.status}
+                    </span>
+                  </p>
 
-                  {!showSolved && (
+                  {/* Show only if the enquiry is not solved */}
+                  {!showSolved && enquiry.status !== "Solved" && (
                     <>
                       <textarea
                         placeholder="Enter reply"
@@ -86,7 +91,7 @@ export function SellerEnquiries() {
                         onChange={(e) => setReply(e.target.value)}
                         className="form-control mt-2"
                       />
-                      <button 
+                      <button
                         onClick={() => handleSolve(enquiry.id)}
                         className="btn action-btn mt-2"
                       >

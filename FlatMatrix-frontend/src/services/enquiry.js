@@ -55,11 +55,10 @@ export const solveEnquiry = async (enquiryId, reply) => {
   }
 };
 
-// Get buyer's queries
-export const getBuyerEnquiries = async () => {
+export const getBuyerEnquiries = async (showSolved) => {
   try {
     const token = sessionStorage.getItem("token");
-    const url = createUrl("enquiries/buyer");
+    const url = createUrl(`enquiries/buyer?showSolved=${showSolved}`);
     const response = await axios.get(url, {
       headers: {
         Authorization: `Bearer ${token}`,

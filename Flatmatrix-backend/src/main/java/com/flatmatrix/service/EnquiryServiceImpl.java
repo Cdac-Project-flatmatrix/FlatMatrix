@@ -112,19 +112,25 @@ public class EnquiryServiceImpl implements EnquiryService {
     public List<EnquiryResponseDto> getBuyerEnquiries(CustomUserDetails currentUser, boolean showSolved) {
         User buyer = userRepository.findById(currentUser.getUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("Buyer not found"));
+        System.out.println(showSolved);
 
-        List<Enquiry> enquiries = showSolved ?
-                enquiryRepository.findByBuyerAndStatus(buyer, EnquiryStatus.SOLVED) :
-                enquiryRepository.findByBuyerAndStatus(buyer, EnquiryStatus.PENDING);
+        List<Enquiry> enquiries;
+        
+        if (showSolved) {
+            enquiries = enquiryRepository.findByBuyer(buyer); 
+        } else {
+            enquiries = enquiryRepository.findByBuyerAndStatus(buyer, EnquiryStatus.PENDING);
+        }
 
         return enquiries.stream().map(enquiry -> {
             EnquiryResponseDto dto = mapper.map(enquiry, EnquiryResponseDto.class);
-            dto.setId(enquiry.getId()); 
-            dto.setPropertyId(enquiry.getProperty().getId()); 
-            dto.setBuyerName(enquiry.getBuyer().getFirstName() + " " + enquiry.getBuyer().getLastName()); 
-            dto.setStatus(enquiry.getStatus().toString()); 
+            dto.setId(enquiry.getId());
+            dto.setPropertyId(enquiry.getProperty().getId());
+            dto.setBuyerName(enquiry.getBuyer().getFirstName() + " " + enquiry.getBuyer().getLastName());
+            dto.setStatus(enquiry.getStatus().toString());
             return dto;
         }).collect(Collectors.toList());
     }
+
 
 }
